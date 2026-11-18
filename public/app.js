@@ -8,6 +8,10 @@ const I18N = {
     navTasks: 'ניהול משימות',
     navSchools: 'פנייה למוסדות לימוד',
     navAthletic: 'פנייה לקבוצות ספורט',
+    mobileNavOverview: 'בקרה',
+    mobileNavTasks: 'משימות',
+    mobileNavSchools: 'מוסדות',
+    mobileNavAthletic: 'ספורט',
     cloudSafeTitle: 'מסד נתונים מוגן ומסונכרן',
     cloudSafeDesc: 'כל שינוי נשמר אוטומטית בדאטה-בייס. רשומות מוגנות מפני מחיקה.',
     cloudSyncBtn: 'שיתוף וגיבוי ענן',
@@ -147,6 +151,10 @@ const I18N = {
     navTasks: 'Task Management',
     navSchools: 'School Outreach',
     navAthletic: 'Athletic Groups Outreach',
+    mobileNavOverview: 'Overview',
+    mobileNavTasks: 'Tasks',
+    mobileNavSchools: 'Schools',
+    mobileNavAthletic: 'Sports',
     cloudSafeTitle: 'Protected Cloud Database',
     cloudSafeDesc: 'All changes auto-save to the database. Records are protected from deletion.',
     cloudSyncBtn: 'Cloud Sync & Backup',
@@ -434,6 +442,10 @@ class OperationsApp {
     setBadge('nav-badge-tasks', summary.totalTasks);
     setBadge('nav-badge-schools', `${summary.schoolsResearched}/${summary.totalSchoolRecords}`);
     setBadge('nav-badge-athletic', summary.athleticGroupsTotal);
+
+    setBadge('mobile-badge-tasks', summary.totalTasks);
+    setBadge('mobile-badge-schools', summary.schoolsResearched);
+    setBadge('mobile-badge-athletic', summary.athleticGroupsTotal);
   }
 
   updateShellChrome() {
@@ -449,7 +461,7 @@ class OperationsApp {
     if (hEl) hEl.textContent = this.t(hKey);
     if (sEl) sEl.textContent = this.t(sKey);
 
-    document.querySelectorAll('.nav-item').forEach(btn => {
+    document.querySelectorAll('.nav-item, .mobile-tab-item').forEach(btn => {
       btn.classList.toggle('active', btn.getAttribute('data-section') === this.activeSection);
     });
   }
@@ -459,14 +471,22 @@ class OperationsApp {
     if (opts.schoolFilter) this.schoolRecordTypeFilter = opts.schoolFilter;
     if (opts.taskStatus) this.taskStatusFilter = opts.taskStatus;
     if (opts.athleticCategory) this.athleticCategoryFilter = opts.athleticCategory;
-    document.getElementById('sidebar')?.classList.remove('open');
+    this.closeMobileMenu();
     this.updateShellChrome();
     this.renderCurrentSection();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   toggleMobileMenu() {
-    document.getElementById('sidebar')?.classList.toggle('open');
+    const sb = document.getElementById('sidebar');
+    const bd = document.getElementById('sidebar-backdrop');
+    const isOpen = sb?.classList.toggle('open');
+    bd?.classList.toggle('open', Boolean(isOpen));
+  }
+
+  closeMobileMenu() {
+    document.getElementById('sidebar')?.classList.remove('open');
+    document.getElementById('sidebar-backdrop')?.classList.remove('open');
   }
 
   formatStatusText(status) {
@@ -878,28 +898,28 @@ class OperationsApp {
           <tbody>
             ${filtered.map(t => `
               <tr>
-                <td><strong>${t.task_number}</strong></td>
-                <td><span class="priority-badge priority-${this.escapeHtml(t.priority)}">${this.escapeHtml(t.priority)}</span></td>
-                <td style="min-width:240px">
+                <td data-label="${this.escapeHtml(this.t('colId'))}"><strong>#${t.task_number}</strong></td>
+                <td data-label="${this.escapeHtml(this.t('colPriority'))}"><span class="priority-badge priority-${this.escapeHtml(t.priority)}">${this.escapeHtml(t.priority)}</span></td>
+                <td data-label="${this.escapeHtml(this.t('colTask'))}" style="min-width:240px">
                   <div style="font-weight:800;font-size:15px;color:var(--navy-900);margin-bottom:4px">${this.escapeHtml(this.bf(t, 'task'))}</div>
                   <div style="font-size:13px;color:var(--text-secondary)">${this.escapeHtml(this.bf(t, 'description'))}</div>
                   <div style="font-size:12px;color:var(--text-muted);margin-top:4px">${this.escapeHtml(this.t('colOwner'))}: <strong>${this.escapeHtml(this.bf(t, 'owner'))}</strong></div>
                 </td>
-                <td>
+                <td data-label="${this.escapeHtml(this.t('colStatus'))}">
                   <select class="form-control" style="font-size:12.5px;padding:6px 10px;font-weight:800" onchange="window.app.quickUpdateTaskStatus(${t.id}, this.value)">
                     ${['Not started', 'In progress', 'Ready for approval', 'Completed'].map(opt => `
                       <option value="${opt}" ${t.status.toLowerCase() === opt.toLowerCase() ? 'selected' : ''}>${this.escapeHtml(this.formatStatusText(opt))}</option>
                     `).join('')}
                   </select>
                 </td>
-                <td style="min-width:210px">
-                  <div style="font-size:13.5px;color:var(--text-primary)">${this.escapeHtml(this.bf(t, 'output_results'))}</div>
+                <td data-label="${this.escapeHtml(this.t('colDeliverable'))}" style="min-width:210px">
+                  <div style="font-size:13.5px;color:var(--text-primary)">${this.escapeHtml(this.bf(t, 'output_results') || '—')}</div>
                 </td>
-                <td style="min-width:180px">
-                  <div style="font-size:13.5px;color:var(--navy-800);font-weight:700">${this.escapeHtml(this.bf(t, 'next_action'))}</div>
+                <td data-label="${this.escapeHtml(this.t('colNextAction'))}" style="min-width:180px">
+                  <div style="font-size:13.5px;color:var(--navy-800);font-weight:700">${this.escapeHtml(this.bf(t, 'next_action') || '—')}</div>
                 </td>
-                <td style="min-width:170px">
-                  <div style="font-size:13px;color:var(--text-secondary)">${this.escapeHtml(this.bf(t, 'notes_approval'))}</div>
+                <td data-label="${this.escapeHtml(this.t('colNotes'))}" style="min-width:170px">
+                  <div style="font-size:13px;color:var(--text-secondary)">${this.escapeHtml(this.bf(t, 'notes_approval') || '—')}</div>
                 </td>
                 <td>
                   <button type="button" class="btn btn-sm btn-outline" onclick="window.app.openTaskModal(${t.id})">${this.escapeHtml(this.t('editBtn'))}</button>
@@ -1135,22 +1155,22 @@ class OperationsApp {
           <tbody>
             ${schoolsList.map(s => `
               <tr>
-                <td><strong>${s.record_number || s.id}</strong></td>
-                <td style="min-width:200px">
+                <td data-label="#"><strong>#${s.record_number || s.id}</strong></td>
+                <td data-label="${this.escapeHtml(this.t('colInstitution'))}" style="min-width:200px">
                   <div style="font-weight:800;color:var(--navy-900)">${this.escapeHtml(this.bf(s, 'institution'))}</div>
                   <div style="font-size:12.5px;color:var(--text-muted)">${this.escapeHtml(this.bf(s, 'location'))}</div>
                   ${s.website ? `<a href="${this.escapeHtml(s.website)}" target="_blank" rel="noopener noreferrer" style="font-size:12px;color:var(--electric-600)">${this.escapeHtml(this.t('openWebsiteBtn'))} ↗</a>` : ''}
                 </td>
-                <td style="min-width:190px;font-size:13.5px">${this.escapeHtml(this.bf(s, 'relevant_program'))}</td>
-                <td style="min-width:160px;font-size:13.5px">${this.escapeHtml(this.bf(s, 'decision_maker'))}</td>
-                <td dir="ltr" style="font-size:13px">
-                  <div>${this.escapeHtml(s.verified_email)}</div>
-                  <div style="color:var(--text-muted)">${this.escapeHtml(s.verified_phone)}</div>
+                <td data-label="${this.escapeHtml(this.t('colProgram'))}" style="min-width:190px;font-size:13.5px">${this.escapeHtml(this.bf(s, 'relevant_program') || '—')}</td>
+                <td data-label="${this.escapeHtml(this.t('colDecisionMaker'))}" style="min-width:160px;font-size:13.5px">${this.escapeHtml(this.bf(s, 'decision_maker') || '—')}</td>
+                <td data-label="${this.escapeHtml(this.t('colEmail'))} / ${this.escapeHtml(this.t('colPhone'))}" dir="ltr" style="font-size:13px">
+                  <div>${this.escapeHtml(s.verified_email || '—')}</div>
+                  <div style="color:var(--text-muted)">${this.escapeHtml(s.verified_phone || '')}</div>
                 </td>
-                <td>${this.formatStatusBadge(s.status)}</td>
-                <td style="min-width:190px;font-size:13px">
-                  <div><strong>${this.escapeHtml(this.bf(s, 'response_result'))}</strong></div>
-                  <div style="color:var(--text-secondary);margin-top:3px">${this.escapeHtml(this.bf(s, 'next_action'))}</div>
+                <td data-label="${this.escapeHtml(this.t('colStatus'))}">${this.formatStatusBadge(s.status)}</td>
+                <td data-label="${this.escapeHtml(this.t('colResponse'))} / ${this.escapeHtml(this.t('colNextAction'))}" style="min-width:190px;font-size:13px">
+                  <div><strong>${this.escapeHtml(this.bf(s, 'response_result') || '—')}</strong></div>
+                  <div style="color:var(--text-secondary);margin-top:3px">${this.escapeHtml(this.bf(s, 'next_action') || '')}</div>
                 </td>
                 <td>
                   <div style="display:flex;flex-wrap:wrap;gap:5px">
@@ -1283,19 +1303,19 @@ class OperationsApp {
               const clubName = this.bf(g, 'club_organization');
               return `
                 <tr>
-                  <td><strong>${g.slot_number}</strong></td>
-                  <td><span class="priority-badge">${this.escapeHtml(this.formatCategoryText(g.category))}</span></td>
-                  <td>
+                  <td data-label="#"><strong>#${g.slot_number}</strong></td>
+                  <td data-label="${this.escapeHtml(this.t('colCategory'))}"><span class="priority-badge">${this.escapeHtml(this.formatCategoryText(g.category))}</span></td>
+                  <td data-label="${this.escapeHtml(this.t('colClubName'))}">
                     <strong style="color:var(--navy-900)">${clubName ? this.escapeHtml(clubName) : `<span style="color:var(--text-muted);font-weight:500">— (${this.escapeHtml(this.t('statusNotResearched'))})</span>`}</strong>
                     ${g.website_social ? `<div><a href="${this.escapeHtml(g.website_social)}" target="_blank" rel="noopener noreferrer" style="font-size:12px;color:var(--electric-600)">${this.escapeHtml(this.t('openWebsiteBtn'))} ↗</a></div>` : ''}
                   </td>
-                  <td>${this.escapeHtml(this.bf(g, 'location') || '—')}</td>
-                  <td>${this.escapeHtml(this.bf(g, 'decision_maker') || '—')}</td>
-                  <td>${this.escapeHtml(g.contact_details || '—')}</td>
-                  <td>${this.escapeHtml(this.bf(g, 'approx_membership') || '—')}</td>
-                  <td>${this.escapeHtml(this.bf(g, 'potential_opportunity') || '—')}</td>
-                  <td style="font-size:13px;color:var(--navy-800)">${this.escapeHtml(this.bf(g, 'next_action') || '—')}</td>
-                  <td>${this.formatStatusBadge(g.status)}</td>
+                  <td data-label="${this.escapeHtml(this.t('colLocation'))}">${this.escapeHtml(this.bf(g, 'location') || '—')}</td>
+                  <td data-label="${this.escapeHtml(this.t('colHeadCoach'))}">${this.escapeHtml(this.bf(g, 'decision_maker') || '—')}</td>
+                  <td data-label="${this.escapeHtml(this.t('colContactDetails'))}">${this.escapeHtml(g.contact_details || '—')}</td>
+                  <td data-label="${this.escapeHtml(this.t('colMembership'))}">${this.escapeHtml(this.bf(g, 'approx_membership') || '—')}</td>
+                  <td data-label="${this.escapeHtml(this.t('colOpportunity'))}">${this.escapeHtml(this.bf(g, 'potential_opportunity') || '—')}</td>
+                  <td data-label="${this.escapeHtml(this.t('colNextAction'))}" style="font-size:13px;color:var(--navy-800)">${this.escapeHtml(this.bf(g, 'next_action') || '—')}</td>
+                  <td data-label="${this.escapeHtml(this.t('colStatus'))}">${this.formatStatusBadge(g.status)}</td>
                   <td>
                     <button type="button" class="btn btn-sm btn-outline" onclick="window.app.openAthleticModal(${g.id})">${this.escapeHtml(this.t('editBtn'))}</button>
                   </td>

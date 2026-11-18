@@ -2,7 +2,8 @@
 <html lang="he" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0A1845" />
   <title>Lev Ari Therapy – Activity & Operations Dashboard | פלטפורמת ניהול פעילות ותפעול</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,6 +12,9 @@
 </head>
 <body>
   <div id="app-shell" class="app-shell">
+    <!-- Mobile Drawer Backdrop -->
+    <div id="sidebar-backdrop" class="sidebar-backdrop" onclick="window.app.closeMobileMenu()"></div>
+
     <!-- Sidebar Navigation (4 Core Sections) -->
     <aside id="sidebar" class="sidebar" aria-label="Main Navigation">
       <!-- Primary Organization Logo: Lev Ari Therapy -->
@@ -23,11 +27,14 @@
           <h1 class="brand-name" data-i18n="brandName">מכבי לב-ארי</h1>
           <p class="brand-subtitle" data-i18n="brandSubtitle">פלטפורמת ניהול פעילות ותפעול</p>
         </div>
+        <button type="button" class="sidebar-close-btn" onclick="window.app.closeMobileMenu()" aria-label="Close Menu">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
       </div>
 
       <!-- 4 Main Sections -->
       <nav class="sidebar-nav">
-        <div class="nav-group-label" data-i18n="navGroupMain">תפריט ראשי</div>
+        <div class="nav-group-label" data-i18n="navGroupMain">תפריט מערכת ראשי</div>
 
         <button type="button" class="nav-item active" data-section="overview" onclick="window.app.navigate('overview')">
           <span class="nav-icon">
@@ -67,7 +74,7 @@
           <span class="cloud-pulse-dot"></span>
           <span class="cloud-status-title" data-i18n="cloudSafeTitle">מסד נתונים מוגן ומסונכרן</span>
         </div>
-        <p class="cloud-status-desc" data-i18n="cloudSafeDesc">כל שינוי נשמר אוטומטית. רשומות מוגנות מפני מחיקה.</p>
+        <p class="cloud-status-desc" data-i18n="cloudSafeDesc">כל שינוי נשמר אוטומטית בדאטה-בייס. רשומות מוגנות מפני מחיקה.</p>
       </div>
 
       <!-- Secondary Brand Identity: Okonski Performance -->
@@ -91,7 +98,7 @@
       <header class="topbar">
         <div class="topbar-start">
           <button type="button" class="mobile-menu-btn" onclick="window.app.toggleMobileMenu()" aria-label="Toggle Menu">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
           </button>
           <div class="topbar-page-info">
             <h2 id="page-heading" class="page-heading">לוח בקרה ראשי</h2>
@@ -110,9 +117,9 @@
           </div>
 
           <!-- Cloud Sync & Backup Button -->
-          <button type="button" class="cloud-pill-btn" onclick="window.app.openCloudModal()">
+          <button type="button" class="cloud-pill-btn" onclick="window.app.openCloudModal()" title="Cloud Sync & Backup">
             <span class="cloud-pulse-dot"></span>
-            <span data-i18n="cloudSyncBtn">שיתוף וגיבוי ענן</span>
+            <span class="cloud-btn-text" data-i18n="cloudSyncBtn">שיתוף וגיבוי ענן</span>
           </button>
 
           <!-- Bilingual Language Switcher (Accessible on Every Page) -->
@@ -126,6 +133,40 @@
       <!-- Dynamic Section Content -->
       <main id="main-content" class="main-content" tabindex="-1"></main>
     </div>
+
+    <!-- Native Mobile Bottom Tab Navigation -->
+    <nav class="mobile-bottom-nav" aria-label="Mobile Bottom Navigation">
+      <button type="button" class="mobile-tab-item active" data-section="overview" onclick="window.app.navigate('overview')">
+        <span class="mobile-tab-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+        </span>
+        <span class="mobile-tab-label" data-i18n="mobileNavOverview">בקרה</span>
+      </button>
+
+      <button type="button" class="mobile-tab-item" data-section="tasks" onclick="window.app.navigate('tasks')">
+        <span class="mobile-tab-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+          <span id="mobile-badge-tasks" class="mobile-tab-badge">12</span>
+        </span>
+        <span class="mobile-tab-label" data-i18n="mobileNavTasks">משימות</span>
+      </button>
+
+      <button type="button" class="mobile-tab-item" data-section="schools" onclick="window.app.navigate('schools')">
+        <span class="mobile-tab-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+          <span id="mobile-badge-schools" class="mobile-tab-badge badge-amber">10</span>
+        </span>
+        <span class="mobile-tab-label" data-i18n="mobileNavSchools">מוסדות</span>
+      </button>
+
+      <button type="button" class="mobile-tab-item" data-section="athletic" onclick="window.app.navigate('athletic')">
+        <span class="mobile-tab-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="2"/><path d="M7 21l3-6 2 2 3-5"/><path d="M5 12l4-2 4 2 4-3"/></svg>
+          <span id="mobile-badge-athletic" class="mobile-tab-badge">30</span>
+        </span>
+        <span class="mobile-tab-label" data-i18n="mobileNavAthletic">ספורט</span>
+      </button>
+    </nav>
   </div>
 
   <!-- Modal Dialog -->
