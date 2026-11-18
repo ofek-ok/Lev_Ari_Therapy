@@ -2,11 +2,9 @@ const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const { URL } = require('node:url');
+const seedData = require('./seed-data.json');
 
-const ROOT_DIR = path.resolve(__dirname, '..');
-const BUNDLED_JSON_PATH = path.join(ROOT_DIR, 'data', 'cloud-db.json');
-const PUBLIC_JSON_PATH = path.join(ROOT_DIR, 'public', 'data', 'cloud-db.json');
-const TMP_JSON_PATH = path.join(os.tmpdir(), 'lev-ari-cloud-db.json');
+const TMP_JSON_PATH = path.join(os.tmpdir(), 'lev-ari-cloud-db-v2.json');
 
 let memoryStore = null;
 
@@ -61,25 +59,17 @@ function computeSummary(store) {
 function getStore() {
   if (memoryStore) return memoryStore;
 
-  const candidates = [TMP_JSON_PATH, BUNDLED_JSON_PATH, PUBLIC_JSON_PATH];
-  for (const filePath of candidates) {
-    try {
-      if (fs.existsSync(filePath)) {
-        const raw = fs.readFileSync(filePath, 'utf8');
-        memoryStore = computeSummary(JSON.parse(raw));
-        return memoryStore;
-      }
-    } catch {
-      // Ignore read errors and try next candidate
+  try {
+    if (fs.existsSync(TMP_JSON_PATH)) {
+      const raw = fs.readFileSync(TMP_JSON_PATH, 'utf8');
+      memoryStore = computeSummary(JSON.parse(raw));
+      return memoryStore;
     }
+  } catch {
+    // Fallback to bundled seedData
   }
 
-  memoryStore = computeSummary({
-    metadata: {},
-    tasks: [],
-    schools: [],
-    athleticGroups: []
-  });
+  memoryStore = computeSummary(JSON.parse(JSON.stringify(seedData)));
   return memoryStore;
 }
 
@@ -88,19 +78,19 @@ function persistStore(store) {
   memoryStore = store;
   const jsonStr = JSON.stringify(store, null, 2);
 
-  // Always write to os.tmpdir() (writable in Vercel / Lambda)
   try {
     fs.writeFileSync(TMP_JSON_PATH, jsonStr, 'utf8');
   } catch {
-    // Ignore if tmp write fails
+    // Ignore tmp write error if any
   }
 
-  // Also write to project files when running locally on a writable disk
   try {
-    fs.writeFileSync(BUNDLED_JSON_PATH, jsonStr, 'utf8');
-    fs.writeFileSync(PUBLIC_JSON_PATH, jsonStr, 'utf8');
+    const localSeedPath = path.join(__dirname, 'seed-data.json');
+    const publicJsonPath = path.join(__dirname, '..', 'public', 'data', 'cloud-db.json');
+    fs.writeFileSync(localSeedPath, jsonStr, 'utf8');
+    fs.writeFileSync(publicJsonPath, jsonStr, 'utf8');
   } catch {
-    // Read-only on Vercel serverless environment — safe to ignore
+    // Read-only in Vercel serverless — safe to ignore
   }
 
   return store;
@@ -137,7 +127,7 @@ function parseBody(req) {
       if (!body) return resolve({});
       try {
         resolve(JSON.parse(body));
-      } catch (err) {
+      } catch {
         resolve({});
       }
     });
@@ -145,7 +135,7 @@ function parseBody(req) {
   });
 }
 
-async function apiHandler(req, res) {
+module.exports = async function apiHandler(req, res) {
   try {
     const parsedUrl = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
     const pathname = parsedUrl.pathname;
@@ -398,6 +388,4 @@ async function apiHandler(req, res) {
     console.error('API Error:', err);
     return sendJson(res, 500, { error: err.message || 'Internal Server Error' });
   }
-}
-
-module.exports = apiHandler;
+};

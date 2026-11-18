@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Lev Ari Therapy – Activity & Operations Dashboard (Bilingual HE/EN)",
   "scripts": {
-    "start": "node server.js",
-    "seed": "node seed.js"
+    "start": "node local-server.js",
+    "seed": "node local-seed.js"
   }
 }
