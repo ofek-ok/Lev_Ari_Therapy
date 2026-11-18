@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lev Ari Therapy – Activity & Operations Dashboard | פלטפורמת ניהול פעילות ותפעול</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700;800&family=Heebo:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="app-shell" class="app-shell">
+    <!-- Sidebar Navigation (4 Core Sections) -->
+    <aside id="sidebar" class="sidebar" aria-label="Main Navigation">
+      <!-- Primary Organization Logo: Lev Ari Therapy -->
+      <div class="brand-primary">
+        <div class="primary-logo-wrap">
+          <img src="assets/lev-ari-logo.png" alt="Lev Ari Therapy - KnotDoctor Athletic Treatment Center" class="logo-img" />
+        </div>
+        <div class="brand-titles">
+          <span class="brand-eyebrow" data-i18n="brandEyebrow">טיפול קליני וספורטתרפיה</span>
+          <h1 class="brand-name" data-i18n="brandName">מכבי לב-ארי</h1>
+          <p class="brand-subtitle" data-i18n="brandSubtitle">פלטפורמת ניהול פעילות ותפעול</p>
+        </div>
+      </div>
+
+      <!-- 4 Main Sections -->
+      <nav class="sidebar-nav">
+        <div class="nav-group-label" data-i18n="navGroupMain">תפריט ראשי</div>
+
+        <button type="button" class="nav-item active" data-section="overview" onclick="window.app.navigate('overview')">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="2"/><rect x="14" y="3" width="7" height="5" rx="2"/><rect x="14" y="12" width="7" height="9" rx="2"/><rect x="3" y="16" width="7" height="5" rx="2"/></svg>
+          </span>
+          <span class="nav-label" data-i18n="navOverview">לוח בקרה ראשי</span>
+        </button>
+
+        <button type="button" class="nav-item" data-section="tasks" onclick="window.app.navigate('tasks')">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+          </span>
+          <span class="nav-label" data-i18n="navTasks">ניהול משימות</span>
+          <span id="nav-badge-tasks" class="nav-badge">12</span>
+        </button>
+
+        <button type="button" class="nav-item" data-section="schools" onclick="window.app.navigate('schools')">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+          </span>
+          <span class="nav-label" data-i18n="navSchools">פנייה למוסדות לימוד</span>
+          <span id="nav-badge-schools" class="nav-badge badge-amber">10</span>
+        </button>
+
+        <button type="button" class="nav-item" data-section="athletic" onclick="window.app.navigate('athletic')">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="2"/><path d="M7 21l3-6 2 2 3-5"/><path d="M5 12l4-2 4 2 4-3"/></svg>
+          </span>
+          <span class="nav-label" data-i18n="navAthletic">פנייה לקבוצות ספורט</span>
+          <span id="nav-badge-athletic" class="nav-badge">30</span>
+        </button>
+      </nav>
+
+      <!-- Cloud Persistence & Safe-Guard Status Card -->
+      <div class="sidebar-cloud-status">
+        <div class="cloud-status-row">
+          <span class="cloud-pulse-dot"></span>
+          <span class="cloud-status-title" data-i18n="cloudSafeTitle">מסד נתונים מוגן ומסונכרן</span>
+        </div>
+        <p class="cloud-status-desc" data-i18n="cloudSafeDesc">כל שינוי נשמר אוטומטית. רשומות מוגנות מפני מחיקה.</p>
+      </div>
+
+      <!-- Secondary Brand Identity: Okonski Performance -->
+      <div class="brand-secondary">
+        <div class="secondary-header" data-i18n="managedByLabel">ניהול פרויקט ופעילות</div>
+        <div class="secondary-card">
+          <div class="secondary-logo-box">
+            <img src="assets/okonski-logo.png" alt="Okonski Performance - Project & Activity Manager" class="logo-img" />
+          </div>
+          <div class="secondary-meta">
+            <div class="secondary-title">Okonski Performance</div>
+            <div class="secondary-role" data-i18n="managerRoleLabel">אופק – מנהל פעילות ותפעול</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Viewport -->
+    <div class="main-wrapper">
+      <!-- Top Header -->
+      <header class="topbar">
+        <div class="topbar-start">
+          <button type="button" class="mobile-menu-btn" onclick="window.app.toggleMobileMenu()" aria-label="Toggle Menu">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+          <div class="topbar-page-info">
+            <h2 id="page-heading" class="page-heading">לוח בקרה ראשי</h2>
+            <p id="page-subheading" class="page-subheading">תמונת מצב מלאה: משימות בביצוע, תוצרים שהושלמו, אישורים ממתינים ופעולות הבאות</p>
+          </div>
+        </div>
+
+        <div class="topbar-end">
+          <!-- Co-Branding Emblem -->
+          <div class="header-cobrand" title="Lev Ari Therapy × Okonski Performance">
+            <img src="assets/lev-ari-logo.png" alt="Lev Ari Therapy" class="header-logo-primary" />
+            <span class="header-cobrand-divider">×</span>
+            <div class="header-logo-secondary-wrap">
+              <img src="assets/okonski-logo.png" alt="Okonski Performance" class="header-logo-secondary" />
+            </div>
+          </div>
+
+          <!-- Cloud Sync & Backup Button -->
+          <button type="button" class="cloud-pill-btn" onclick="window.app.openCloudModal()">
+            <span class="cloud-pulse-dot"></span>
+            <span data-i18n="cloudSyncBtn">שיתוף וגיבוי ענן</span>
+          </button>
+
+          <!-- Bilingual Language Switcher (Accessible on Every Page) -->
+          <div class="lang-switcher" role="group" aria-label="Language Switcher">
+            <button type="button" id="lang-btn-he" class="lang-btn active" onclick="window.app.setLanguage('he')">עברית</button>
+            <button type="button" id="lang-btn-en" class="lang-btn" onclick="window.app.setLanguage('en')">English</button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Dynamic Section Content -->
+      <main id="main-content" class="main-content" tabindex="-1"></main>
+    </div>
+  </div>
+
+  <!-- Modal Dialog -->
+  <div id="modal-backdrop" class="modal-backdrop hidden" onclick="window.app.handleBackdropClick(event)">
+    <div id="modal-dialog" class="modal-dialog" role="dialog" aria-modal="true">
+      <div class="modal-header">
+        <h3 id="modal-title" class="modal-title"></h3>
+        <button type="button" class="modal-close-btn" onclick="window.app.closeModal()" aria-label="Close">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div id="modal-body" class="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
