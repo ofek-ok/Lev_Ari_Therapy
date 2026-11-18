@@ -327,15 +327,26 @@ class OperationsApp {
   }
 
   async loadBootstrap() {
+    const cachedRaw = localStorage.getItem('lev_ari_local_backup');
+    const cached = cachedRaw ? JSON.parse(cachedRaw) : null;
     try {
       const res = await fetch('api/bootstrap');
       if (!res.ok) throw new Error('API unreachable');
-      this.data = await res.json();
-      localStorage.setItem('lev_ari_local_backup', JSON.stringify(this.data));
+      const remoteData = await res.json();
+      if (
+        cached &&
+        cached.lastSyncedAt &&
+        remoteData.lastSyncedAt &&
+        new Date(cached.lastSyncedAt) > new Date(remoteData.lastSyncedAt)
+      ) {
+        this.data = cached;
+      } else {
+        this.data = remoteData;
+        localStorage.setItem('lev_ari_local_backup', JSON.stringify(this.data));
+      }
     } catch {
-      const cached = localStorage.getItem('lev_ari_local_backup');
       if (cached) {
-        this.data = JSON.parse(cached);
+        this.data = cached;
       } else {
         const res = await fetch('data/cloud-db.json');
         this.data = await res.json();
