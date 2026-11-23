@@ -4,9 +4,43 @@ const path = require('node:path');
 const { URL } = require('node:url');
 const seedData = require('./seed-data.json');
 
-const TMP_JSON_PATH = path.join(os.tmpdir(), 'lev-ari-cloud-db-v2.json');
+const TMP_JSON_PATH = path.join(os.tmpdir(), 'lev-ari-cloud-db-v3.json');
+const REDIS_KEY = 'lev_ari_operations_store_v1';
 
 let memoryStore = null;
+
+function getUpstashConfig() {
+  const url = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL || '';
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN || '';
+  if (url && token) {
+    return { url: url.replace(/\/+$/, ''), token };
+  }
+  return null;
+}
+
+function getGithubConfig() {
+  const token = process.env.GITHUB_TOKEN || '';
+  if (!token) return null;
+  return {
+    token,
+    repo: process.env.GITHUB_REPO || 'ofek-ok/Lev_Ari_Therapy',
+    branch: process.env.GITHUB_DATA_BRANCH || 'data-store',
+    filePath: 'cloud-db.json'
+  };
+}
+
+function getPersistenceMode() {
+  if (getUpstashConfig()) return 'upstash';
+  if (getGithubConfig()) return 'github';
+  try {
+    const testPath = path.join(__dirname, '.write-test');
+    fs.writeFileSync(testPath, 'ok');
+    fs.unlinkSync(testPath);
+    return 'local';
+  } catch {
+    return 'memory';
+  }
+}
 
 function computeSummary(store) {
   const tasks = store.tasks || [];
@@ -35,7 +69,7 @@ function computeSummary(store) {
     g => ['ready for approval', 'pending approval'].includes((g.status || '').toLowerCase())
   ).length;
 
-  store.lastSyncedAt = new Date().toISOString();
+  store.persistenceMode = getPersistenceMode();
   store.summary = {
     totalTasks,
     tasksInProgress,
@@ -56,8 +90,132 @@ function computeSummary(store) {
   return store;
 }
 
-function getStore() {
-  if (memoryStore) return memoryStore;
+async function readFromUpstash() {
+  const cfg = getUpstashConfig();
+  if (!cfg) return null;
+  try {
+    const res = await fetch(`${cfg.url}/get/${encodeURIComponent(REDIS_KEY)}`, {
+      headers: { Authorization: `Bearer ${cfg.token}` }
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (data && typeof data.result === 'string' && data.result.length > 0) {
+      return JSON.parse(data.result);
+    }
+  } catch (err) {
+    console.error('Upstash read error:', err.message);
+  }
+  return null;
+}
+
+async function writeToUpstash(store) {
+  const cfg = getUpstashConfig();
+  if (!cfg) return false;
+  try {
+    const res = await fetch(`${cfg.url}/set/${encodeURIComponent(REDIS_KEY)}`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${cfg.token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(store)
+    });
+    return res.ok;
+  } catch (err) {
+    console.error('Upstash write error:', err.message);
+    return false;
+  }
+}
+
+async function readFromGithub() {
+  const cfg = getGithubConfig();
+  if (!cfg) return null;
+  try {
+    const apiUrl = `https://api.github.com/repos/${cfg.repo}/contents/${cfg.filePath}?ref=${cfg.branch}`;
+    const res = await fetch(apiUrl, {
+      headers: {
+        Authorization: `Bearer ${cfg.token}`,
+        Accept: 'application/vnd.github+json',
+        'User-Agent': 'lev-ari-operations-app'
+      }
+    });
+    if (!res.ok) return null;
+    const json = await res.json();
+    if (json && json.content) {
+      const decoded = Buffer.from(json.content, 'base64').toString('utf8');
+      return JSON.parse(decoded);
+    }
+  } catch (err) {
+    console.error('GitHub read error:', err.message);
+  }
+  return null;
+}
+
+async function writeToGithub(store) {
+  const cfg = getGithubConfig();
+  if (!cfg) return false;
+  try {
+    const headers = {
+      Authorization: `Bearer ${cfg.token}`,
+      Accept: 'application/vnd.github+json',
+      'Content-Type': 'application/json',
+      'User-Agent': 'lev-ari-operations-app'
+    };
+
+    // Ensure data-store branch exists
+    const branchCheck = await fetch(`https://api.github.com/repos/${cfg.repo}/branches/${cfg.branch}`, { headers });
+    if (branchCheck.status === 404) {
+      const mainRefRes = await fetch(`https://api.github.com/repos/${cfg.repo}/git/ref/heads/main`, { headers });
+      if (mainRefRes.ok) {
+        const mainRef = await mainRefRes.json();
+        await fetch(`https://api.github.com/repos/${cfg.repo}/git/refs`, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({ ref: `refs/heads/${cfg.branch}`, sha: mainRef.object.sha })
+        });
+      }
+    }
+
+    const fileUrl = `https://api.github.com/repos/${cfg.repo}/contents/${cfg.filePath}?ref=${cfg.branch}`;
+    const existingRes = await fetch(fileUrl, { headers });
+    let sha = undefined;
+    if (existingRes.ok) {
+      const existingJson = await existingRes.json();
+      sha = existingJson.sha;
+    }
+
+    const contentBase64 = Buffer.from(JSON.stringify(store, null, 2), 'utf8').toString('base64');
+    const putRes = await fetch(`https://api.github.com/repos/${cfg.repo}/contents/${cfg.filePath}`, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify({
+        message: `Sync operations store (${new Date().toISOString()})`,
+        content: contentBase64,
+        branch: cfg.branch,
+        ...(sha ? { sha } : {})
+      })
+    });
+    return putRes.ok;
+  } catch (err) {
+    console.error('GitHub write error:', err.message);
+    return false;
+  }
+}
+
+async function getStore() {
+  const upstashData = await readFromUpstash();
+  if (upstashData) {
+    memoryStore = computeSummary(upstashData);
+    return memoryStore;
+  }
+
+  const githubData = await readFromGithub();
+  if (githubData) {
+    memoryStore = computeSummary(githubData);
+    return memoryStore;
+  }
+
+  if (memoryStore) return computeSummary(memoryStore);
 
   try {
     if (fs.existsSync(TMP_JSON_PATH)) {
@@ -73,10 +231,14 @@ function getStore() {
   return memoryStore;
 }
 
-function persistStore(store) {
+async function persistStore(store) {
+  store.lastSyncedAt = new Date().toISOString();
   computeSummary(store);
   memoryStore = store;
   const jsonStr = JSON.stringify(store, null, 2);
+
+  await writeToUpstash(store);
+  await writeToGithub(store);
 
   try {
     fs.writeFileSync(TMP_JSON_PATH, jsonStr, 'utf8');
@@ -87,13 +249,38 @@ function persistStore(store) {
   try {
     const localSeedPath = path.join(__dirname, 'seed-data.json');
     const publicJsonPath = path.join(__dirname, '..', 'public', 'data', 'cloud-db.json');
+    const dataJsonPath = path.join(__dirname, '..', 'data', 'cloud-db.json');
     fs.writeFileSync(localSeedPath, jsonStr, 'utf8');
     fs.writeFileSync(publicJsonPath, jsonStr, 'utf8');
+    fs.writeFileSync(dataJsonPath, jsonStr, 'utf8');
   } catch {
     // Read-only in Vercel serverless — safe to ignore
   }
 
   return store;
+}
+
+function normalizeOwner(body, existing = null) {
+  const raw = (body.owner_key || body.owner_en || body.owner_he || '').toString().trim().toLowerCase();
+  if (raw === 'maccabi' || raw === 'מכבי' || raw.includes('maccabi') || raw.includes('מכבי') || raw.includes('lev-ari') || raw.includes('לב-ארי')) {
+    return { owner_he: 'מכבי', owner_en: 'Maccabi' };
+  }
+  if (raw === 'ofek' || raw === 'אופק') {
+    return { owner_he: 'אופק', owner_en: 'Ofek' };
+  }
+  if (body.owner_he || body.owner_en) {
+    return {
+      owner_he: body.owner_he || body.owner_en,
+      owner_en: body.owner_en || body.owner_he
+    };
+  }
+  if (existing) {
+    return {
+      owner_he: existing.owner_he || 'אופק',
+      owner_en: existing.owner_en || 'Ofek'
+    };
+  }
+  return { owner_he: 'אופק', owner_en: 'Ofek' };
 }
 
 function sendJson(res, statusCode, payload) {
@@ -140,10 +327,18 @@ module.exports = async function apiHandler(req, res) {
     const parsedUrl = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
     const pathname = parsedUrl.pathname;
     const method = (req.method || 'GET').toUpperCase();
-    const store = getStore();
+    const store = await getStore();
 
     if (pathname === '/api/bootstrap' && method === 'GET') {
       return sendJson(res, 200, computeSummary(store));
+    }
+
+    if (pathname === '/api/health' && method === 'GET') {
+      return sendJson(res, 200, {
+        ok: true,
+        persistenceMode: getPersistenceMode(),
+        lastSyncedAt: store.lastSyncedAt || null
+      });
     }
 
     if (pathname === '/api/export' && method === 'GET') {
@@ -153,6 +348,20 @@ module.exports = async function apiHandler(req, res) {
         'Content-Disposition': 'attachment; filename="lev-ari-cloud-backup.json"'
       });
       return res.end(JSON.stringify(data, null, 2));
+    }
+
+    if (pathname === '/api/import' && method === 'POST') {
+      const b = await parseBody(req);
+      if (!b || !Array.isArray(b.tasks) || !Array.isArray(b.schools)) {
+        return sendJson(res, 400, { error: 'Invalid backup payload' });
+      }
+      const nextStore = {
+        metadata: b.metadata || store.metadata || {},
+        tasks: b.tasks,
+        schools: b.schools,
+        athleticGroups: Array.isArray(b.athleticGroups) ? b.athleticGroups : store.athleticGroups
+      };
+      return sendJson(res, 200, await persistStore(nextStore));
     }
 
     if (pathname === '/api/metadata' && method === 'PUT') {
@@ -170,7 +379,7 @@ module.exports = async function apiHandler(req, res) {
           store.metadata[key] = b[key];
         }
       }
-      return sendJson(res, 200, persistStore(store));
+      return sendJson(res, 200, await persistStore(store));
     }
 
     // TASKS
@@ -180,6 +389,7 @@ module.exports = async function apiHandler(req, res) {
       const maxNum = store.tasks.reduce((acc, t) => Math.max(acc, t.task_number || 0), 0);
       const titleHe = (b.task_he || b.task_en || '').trim();
       const titleEn = (b.task_en || b.task_he || '').trim();
+      const owner = normalizeOwner(b);
 
       store.tasks.push({
         id: maxId + 1,
@@ -192,8 +402,8 @@ module.exports = async function apiHandler(req, res) {
         status: b.status || 'Not started',
         next_action_he: b.next_action_he || b.next_action_en || '',
         next_action_en: b.next_action_en || b.next_action_he || '',
-        owner_he: b.owner_he || 'אופק',
-        owner_en: b.owner_en || 'Ofek',
+        owner_he: owner.owner_he,
+        owner_en: owner.owner_en,
         output_results_he: b.output_results_he || b.output_results_en || '',
         output_results_en: b.output_results_en || b.output_results_he || '',
         links_files: b.links_files || '',
@@ -202,7 +412,7 @@ module.exports = async function apiHandler(req, res) {
         updated_at: new Date().toISOString()
       });
 
-      return sendJson(res, 201, persistStore(store));
+      return sendJson(res, 201, await persistStore(store));
     }
 
     if (pathname.startsWith('/api/tasks/') && method === 'PUT') {
@@ -211,6 +421,7 @@ module.exports = async function apiHandler(req, res) {
       const existing = store.tasks.find(t => Number(t.id) === id);
       if (!existing) return sendJson(res, 404, { error: 'Task not found' });
 
+      const owner = normalizeOwner(b, existing);
       Object.assign(existing, {
         priority: b.priority ?? existing.priority,
         task_he: b.task_he ?? existing.task_he,
@@ -220,8 +431,8 @@ module.exports = async function apiHandler(req, res) {
         status: b.status ?? existing.status,
         next_action_he: b.next_action_he ?? existing.next_action_he,
         next_action_en: b.next_action_en ?? existing.next_action_en,
-        owner_he: b.owner_he ?? existing.owner_he,
-        owner_en: b.owner_en ?? existing.owner_en,
+        owner_he: owner.owner_he,
+        owner_en: owner.owner_en,
         output_results_he: b.output_results_he ?? existing.output_results_he,
         output_results_en: b.output_results_en ?? existing.output_results_en,
         links_files: b.links_files ?? existing.links_files,
@@ -230,7 +441,7 @@ module.exports = async function apiHandler(req, res) {
         updated_at: new Date().toISOString()
       });
 
-      return sendJson(res, 200, persistStore(store));
+      return sendJson(res, 200, await persistStore(store));
     }
 
     // SCHOOLS
@@ -272,7 +483,7 @@ module.exports = async function apiHandler(req, res) {
         updated_at: new Date().toISOString()
       });
 
-      return sendJson(res, 201, persistStore(store));
+      return sendJson(res, 201, await persistStore(store));
     }
 
     if (pathname.startsWith('/api/schools/') && method === 'PUT') {
@@ -308,7 +519,7 @@ module.exports = async function apiHandler(req, res) {
         updated_at: new Date().toISOString()
       });
 
-      return sendJson(res, 200, persistStore(store));
+      return sendJson(res, 200, await persistStore(store));
     }
 
     // ATHLETIC GROUPS
@@ -345,7 +556,7 @@ module.exports = async function apiHandler(req, res) {
         updated_at: new Date().toISOString()
       });
 
-      return sendJson(res, 201, persistStore(store));
+      return sendJson(res, 201, await persistStore(store));
     }
 
     if (pathname.startsWith('/api/athletic-groups/') && method === 'PUT') {
@@ -380,7 +591,7 @@ module.exports = async function apiHandler(req, res) {
         updated_at: new Date().toISOString()
       });
 
-      return sendJson(res, 200, persistStore(store));
+      return sendJson(res, 200, await persistStore(store));
     }
 
     return sendJson(res, 404, { error: 'API route not found' });

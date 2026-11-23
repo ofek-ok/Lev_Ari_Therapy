@@ -96,6 +96,10 @@ const I18N = {
     colNextAction: 'הפעולה הבאה',
     colNotes: 'הערות / אישור',
     colOwner: 'אחראי',
+    ownerOfek: 'אופק',
+    ownerMaccabi: 'מכבי',
+    filterByOwner: 'אחראי:',
+    selectOwnerLabel: 'שיוך משימה לאחראי',
     colProgram: 'מסלולי לימוד',
     colDecisionMaker: 'איש קשר / מקבל החלטות',
     colEmail: 'אימייל',
@@ -218,6 +222,10 @@ const I18N = {
     colNextAction: 'Next Action',
     colNotes: 'Notes / Approval',
     colOwner: 'Owner',
+    ownerOfek: 'Ofek',
+    ownerMaccabi: 'Maccabi',
+    filterByOwner: 'Owner:',
+    selectOwnerLabel: 'Assign Task Owner',
     colProgram: 'Relevant Programs',
     colDecisionMaker: 'Decision-Maker',
     colEmail: 'Verified Email',
@@ -252,6 +260,7 @@ class OperationsApp {
     this.data = null;
 
     this.taskStatusFilter = 'all';
+    this.taskOwnerFilter = 'all';
     this.taskSearch = '';
 
     this.schoolRecordTypeFilter = 'prospect';
@@ -271,6 +280,20 @@ class OperationsApp {
     const primary = obj[`${baseField}_${this.lang}`];
     const fallback = obj[`${baseField}_${this.lang === 'he' ? 'en' : 'he'}`];
     return primary || fallback || obj[baseField] || '';
+  }
+
+  getOwnerKey(task) {
+    const raw = `${task?.owner_en || ''} ${task?.owner_he || ''}`.toLowerCase();
+    if (raw.includes('maccabi') || raw.includes('מכבי') || raw.includes('lev-ari') || raw.includes('לב-ארי')) {
+      return 'maccabi';
+    }
+    return 'ofek';
+  }
+
+  formatOwnerBadge(task) {
+    const key = this.getOwnerKey(task);
+    const label = key === 'maccabi' ? this.t('ownerMaccabi') : this.t('ownerOfek');
+    return `<span class="owner-pill owner-${key}">👤 ${this.escapeHtml(label)}</span>`;
   }
 
   escapeHtml(str) {
@@ -557,9 +580,14 @@ class OperationsApp {
 
         <div class="hero-meta-strip">
           <span class="meta-pill"><strong>${this.escapeHtml(this.t('weeklyCapacityLabel'))}</strong> ${this.escapeHtml(weeklyCap)}</span>
-          <button type="button" class="btn btn-sm btn-outline" style="background:rgba(255,255,255,0.14);color:#fff;border-color:rgba(255,255,255,0.25);margin-inline-start:auto" onclick="window.app.openMetadataModal()">
-            ⚙️ ${this.escapeHtml(this.t('editPrinciplesBtn'))}
-          </button>
+          <div style="display:flex;gap:6px;margin-inline-start:auto">
+            <button type="button" class="btn btn-sm" style="background:var(--orange-500);color:#fff" onclick="window.app.openTaskModal()">
+              ${this.escapeHtml(this.t('addTaskBtn'))}
+            </button>
+            <button type="button" class="btn btn-sm btn-outline" style="background:rgba(255,255,255,0.14);color:#fff;border-color:rgba(255,255,255,0.25)" onclick="window.app.openMetadataModal()">
+              ⚙️ ${this.escapeHtml(this.t('editPrinciplesBtn'))}
+            </button>
+          </div>
         </div>
       </section>
 
@@ -636,6 +664,7 @@ class OperationsApp {
                 <div class="task-card-top">
                   <div class="task-id-group">
                     <span class="priority-badge priority-${this.escapeHtml(t.priority)}">${this.escapeHtml(t.priority)}</span>
+                    ${this.formatOwnerBadge(t)}
                     <strong style="font-size:14px;color:var(--navy-900)">#${t.task_number} ${this.escapeHtml(this.bf(t, 'task'))}</strong>
                   </div>
                   ${this.formatStatusBadge(t.status)}
@@ -730,9 +759,12 @@ class OperationsApp {
       if (this.taskStatusFilter !== 'all' && t.status.toLowerCase() !== this.taskStatusFilter.toLowerCase()) {
         return false;
       }
+      if (this.taskOwnerFilter !== 'all' && this.getOwnerKey(t) !== this.taskOwnerFilter) {
+        return false;
+      }
       if (this.taskSearch) {
         const q = this.taskSearch.toLowerCase();
-        const hay = `${t.task_he} ${t.task_en} ${t.description_he} ${t.description_en} ${t.output_results_he} ${t.output_results_en} ${t.next_action_he} ${t.next_action_en} ${t.notes_approval_he} ${t.notes_approval_en} ${t.priority}`.toLowerCase();
+        const hay = `${t.task_he} ${t.task_en} ${t.description_he} ${t.description_en} ${t.output_results_he} ${t.output_results_en} ${t.next_action_he} ${t.next_action_en} ${t.notes_approval_he} ${t.notes_approval_en} ${t.owner_he} ${t.owner_en} ${t.priority}`.toLowerCase();
         if (!hay.includes(q)) return false;
       }
       return true;
@@ -746,12 +778,27 @@ class OperationsApp {
       { key: 'Completed', label: `${this.t('statusCompleted')} (${tasks.filter(t => t.status.toLowerCase() === 'completed').length})` }
     ];
 
+    const owners = [
+      { key: 'all', label: this.t('filterAll') },
+      { key: 'ofek', label: `${this.t('ownerOfek')} (${tasks.filter(t => this.getOwnerKey(t) === 'ofek').length})` },
+      { key: 'maccabi', label: `${this.t('ownerMaccabi')} (${tasks.filter(t => this.getOwnerKey(t) === 'maccabi').length})` }
+    ];
+
     return `
       <div class="filter-bar">
         <div class="pills-scroll">
           ${statuses.map(st => `
             <button type="button" class="pill-btn ${this.taskStatusFilter === st.key ? 'active' : ''}" onclick="window.app.setTaskFilter('${st.key}')">
               ${this.escapeHtml(st.label)}
+            </button>
+          `).join('')}
+        </div>
+
+        <div class="owner-filter-row pills-scroll">
+          <span class="owner-filter-label">${this.escapeHtml(this.t('filterByOwner'))}</span>
+          ${owners.map(ow => `
+            <button type="button" class="pill-btn ${this.taskOwnerFilter === ow.key ? 'active' : ''}" onclick="window.app.setTaskOwnerFilter('${ow.key}')">
+              ${this.escapeHtml(ow.label)}
             </button>
           `).join('')}
         </div>
@@ -769,7 +816,7 @@ class OperationsApp {
               <div class="task-id-group">
                 <span class="task-num-tag">#${t.task_number}</span>
                 <span class="priority-badge priority-${this.escapeHtml(t.priority)}">${this.escapeHtml(t.priority)}</span>
-                <span style="font-size:12px;color:var(--text-muted)">• ${this.escapeHtml(this.bf(t, 'owner'))}</span>
+                ${this.formatOwnerBadge(t)}
               </div>
               ${this.formatStatusBadge(t.status)}
             </div>
@@ -815,6 +862,11 @@ class OperationsApp {
 
   setTaskFilter(status) {
     this.taskStatusFilter = status;
+    this.renderCurrentSection();
+  }
+
+  setTaskOwnerFilter(ownerKey) {
+    this.taskOwnerFilter = ownerKey;
     this.renderCurrentSection();
   }
 
@@ -1157,15 +1209,30 @@ class OperationsApp {
   openTaskModal(id = null) {
     const task = id ? this.data.tasks.find(t => t.id === id) : null;
     const title = task ? `#${task.task_number} ${this.bf(task, 'task')}` : this.t('addTaskBtn');
+    const currentOwner = task ? this.getOwnerKey(task) : 'maccabi';
 
     this.openModal(title, `
       <form onsubmit="window.app.saveTaskForm(event, ${id || 'null'})">
         <div class="form-grid">
+          <div class="form-group full-width">
+            <label class="form-label">${this.escapeHtml(this.t('selectOwnerLabel'))}</label>
+            <div class="owner-selector-group">
+              <label class="owner-radio-label">
+                <input type="radio" name="owner_key" value="ofek" ${currentOwner === 'ofek' ? 'checked' : ''} />
+                <span>👤 ${this.escapeHtml(this.t('ownerOfek'))}</span>
+              </label>
+              <label class="owner-radio-label">
+                <input type="radio" name="owner_key" value="maccabi" ${currentOwner === 'maccabi' ? 'checked' : ''} />
+                <span>👤 ${this.escapeHtml(this.t('ownerMaccabi'))}</span>
+              </label>
+            </div>
+          </div>
+
           <div class="form-group">
             <label class="form-label">${this.escapeHtml(this.t('colPriority'))}</label>
             <select name="priority" class="form-control">
               ${['P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7'].map(p => `
-                <option value="${p}" ${task && task.priority === p ? 'selected' : ''}>${p}</option>
+                <option value="${p}" ${(task ? task.priority : 'P2') === p ? 'selected' : ''}>${p}</option>
               `).join('')}
             </select>
           </div>
@@ -1180,11 +1247,11 @@ class OperationsApp {
 
           <div class="form-group">
             <label class="form-label">שם המשימה (עברית)</label>
-            <input type="text" name="task_he" dir="rtl" class="form-control" required value="${this.escapeHtml(task ? task.task_he : '')}" />
+            <input type="text" name="task_he" dir="rtl" class="form-control" ${this.lang === 'he' ? 'required' : ''} value="${this.escapeHtml(task ? task.task_he : '')}" />
           </div>
           <div class="form-group">
             <label class="form-label">Task Name (English)</label>
-            <input type="text" name="task_en" dir="ltr" class="form-control" required value="${this.escapeHtml(task ? task.task_en : '')}" />
+            <input type="text" name="task_en" dir="ltr" class="form-control" ${this.lang === 'en' ? 'required' : ''} value="${this.escapeHtml(task ? task.task_en : '')}" />
           </div>
 
           <div class="form-group">
@@ -1226,6 +1293,19 @@ class OperationsApp {
     e.preventDefault();
     const fd = new FormData(e.target);
     const payload = Object.fromEntries(fd.entries());
+    payload.task_he = (payload.task_he || payload.task_en || '').trim();
+    payload.task_en = (payload.task_en || payload.task_he || '').trim();
+    payload.description_he = payload.description_he || payload.description_en || '';
+    payload.description_en = payload.description_en || payload.description_he || '';
+    payload.output_results_he = payload.output_results_he || payload.output_results_en || '';
+    payload.output_results_en = payload.output_results_en || payload.output_results_he || '';
+    payload.next_action_he = payload.next_action_he || payload.next_action_en || '';
+    payload.next_action_en = payload.next_action_en || payload.next_action_he || '';
+
+    const isMaccabi = payload.owner_key === 'maccabi';
+    payload.owner_he = isMaccabi ? 'מכבי' : 'אופק';
+    payload.owner_en = isMaccabi ? 'Maccabi' : 'Ofek';
+
     try {
       const url = id ? `api/tasks/${id}` : 'api/tasks';
       const method = id ? 'PUT' : 'POST';
@@ -1242,7 +1322,7 @@ class OperationsApp {
         if (idx !== -1) Object.assign(this.data.tasks[idx], payload);
       } else {
         const nextNum = (this.data.tasks.length || 0) + 1;
-        this.data.tasks.push({ id: Date.now(), task_number: nextNum, owner_he: 'אופק', owner_en: 'Ofek', ...payload });
+        this.data.tasks.push({ id: Date.now(), task_number: nextNum, ...payload });
       }
       this.recomputeSummary();
     }
@@ -1488,18 +1568,60 @@ class OperationsApp {
 
   openCloudModal() {
     const isHe = this.lang === 'he';
+    const mode = this.data?.persistenceMode || 'memory';
+    const isPersistent = mode === 'upstash' || mode === 'github' || mode === 'local';
+
+    const statusTitle = isPersistent
+      ? (isHe ? `✓ מסד נתונים ענן מחובר (${mode.toUpperCase()})` : `✓ Persistent Cloud Backend Connected (${mode.toUpperCase()})`)
+      : (isHe ? '⚠️ מצב זיכרון זמני בשרת (נדרש חיבור Upstash Redis / KV)' : '⚠️ Ephemeral Server Memory (Connect Upstash Redis / KV for Cloud Persistence)');
+
+    const statusDesc = isPersistent
+      ? (isHe
+          ? 'כל משימה, שינוי או אישור נשמרים לצמיתות בענן ומסונכרנים בזמן אמת בין אופק למכבי.'
+          : 'Every task, update, and approval is permanently saved in the cloud and synced between Ofek and Maccabi.')
+      : (isHe
+          ? 'כדי שמשימות יישמרו בענן בין אופק למכבי גם לאחר הפעלה מחדש של Vercel: היכנס ל-Vercel ← Storage ← Create Database ← בחר Upstash Redis (חינמי) וחבר לפרויקט.'
+          : 'To persist tasks permanently across all devices in Vercel: open Vercel Dashboard → Storage → Create Database → Upstash Redis (free tier) and link it to this project.');
+
     this.openModal(
-      isHe ? 'גיבוי ענן והגנת נתונים' : 'Cloud Backup & Data Protection',
+      isHe ? 'בקאנד ענן וגיבוי נתונים' : 'Cloud Backend & Data Protection',
       `
         <div style="display:flex;flex-direction:column;gap:12px">
-          <div style="padding:14px;border-radius:12px;background:var(--emerald-50);border:1px solid #A7F3D0;color:var(--emerald-700);font-size:13.5px">
-            <strong>${isHe ? '✓ שמירה אוטומטית פעילה – שום רשומה לא נמחקת' : '✓ Auto-Save Active – Zero Data Deletion'}</strong>
-            <p style="margin-top:4px">${isHe ? 'כל הרשומות והעדכונים נשמרים בדאטה-בייס ומוגנים מפני מחיקה.' : 'All records and updates are saved and protected against deletion.'}</p>
+          <div style="padding:14px;border-radius:12px;background:${isPersistent ? 'var(--emerald-50)' : 'var(--amber-50)'};border:1px solid ${isPersistent ? '#A7F3D0' : '#FCD34D'};color:${isPersistent ? 'var(--emerald-700)' : '#78350F'};font-size:13.5px">
+            <strong>${statusTitle}</strong>
+            <p style="margin-top:5px;line-height:1.5">${statusDesc}</p>
           </div>
           <a href="api/export" class="btn btn-primary" style="width:100%">${isHe ? '⬇️ הורד גיבוי מסד נתונים (JSON)' : '⬇️ Download Database Backup (JSON)'}</a>
+          <label class="btn btn-outline" style="width:100%;cursor:pointer">
+            <span>${isHe ? '⬆️ שחזר / טען קובץ גיבוי (JSON)' : '⬆️ Restore / Import Backup (JSON)'}</span>
+            <input type="file" accept=".json,application/json" style="display:none" onchange="window.app.importBackupFile(event)" />
+          </label>
         </div>
       `
     );
+  }
+
+  async importBackupFile(event) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    try {
+      const text = await file.text();
+      const parsed = JSON.parse(text);
+      const res = await fetch('api/import', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(parsed)
+      });
+      if (!res.ok) throw new Error('Import failed');
+      this.data = await res.json();
+      localStorage.setItem('lev_ari_local_backup', JSON.stringify(this.data));
+      this.closeModal();
+      this.updateNavBadges();
+      this.renderCurrentSection();
+      this.showToast(this.t('savedToast'));
+    } catch {
+      this.showToast(this.lang === 'he' ? 'שגיאה בטעינת קובץ הגיבוי' : 'Error importing backup file');
+    }
   }
 }
 
