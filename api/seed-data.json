@@ -30,7 +30,9 @@
       "links_files": "",
       "notes_approval_he": "לעדכן את לב-ארי באופן שוטף.",
       "notes_approval_en": "Keep Lev-Ari updated.",
-      "updated_at": "2026-11-18 08:40:25"
+      "updated_at": "2026-11-18 08:40:25",
+      "due_date": "",
+      "follow_up_date": ""
     },
     {
       "id": 2,
@@ -50,7 +52,9 @@
       "links_files": "",
       "notes_approval_he": "כיתת אמן: 15 בדצמבר, 15:00–20:00. לתעד קישורים לפוסטים.",
       "notes_approval_en": "Masterclass: 15 Dec, 15:00–20:00. Record post links.",
-      "updated_at": "2026-11-18 08:40:28"
+      "updated_at": "2026-11-18 08:40:28",
+      "due_date": "",
+      "follow_up_date": ""
     },
     {
       "id": 3,
@@ -70,7 +74,9 @@
       "links_files": "",
       "notes_approval_he": "יעד: מינימום 3 שיתופים משמעותיים בשבוע.",
       "notes_approval_en": "Target: minimum 3 meaningful shares per week.",
-      "updated_at": "2026-11-18 08:40:39"
+      "updated_at": "2026-11-18 08:40:39",
+      "due_date": "",
+      "follow_up_date": ""
     },
     {
       "id": 4,
@@ -90,7 +96,9 @@
       "links_files": "",
       "notes_approval_he": "אין לשכפל מוסדות שכבר נוצר עמם קשר.",
       "notes_approval_en": "Do not duplicate institutions already contacted.",
-      "updated_at": "2026-11-18 08:40:46"
+      "updated_at": "2026-11-18 08:40:46",
+      "due_date": "",
+      "follow_up_date": ""
     },
     {
       "id": 5,
@@ -110,7 +118,9 @@
       "links_files": "",
       "notes_approval_he": "כתובת האימייל המקורית לא עבדה.",
       "notes_approval_en": "Original email did not work.",
-      "updated_at": "2026-11-18 08:34:37"
+      "updated_at": "2026-11-18 08:34:37",
+      "due_date": "",
+      "follow_up_date": ""
     },
     {
       "id": 6,
@@ -130,7 +140,9 @@
       "links_files": "",
       "notes_approval_he": "",
       "notes_approval_en": "",
-      "updated_at": "2026-11-18 08:34:37"
+      "updated_at": "2026-11-18 08:34:37",
+      "due_date": "",
+      "follow_up_date": ""
     },
     {
       "id": 7,
@@ -150,7 +162,9 @@
       "links_files": "",
       "notes_approval_he": "",
       "notes_approval_en": "",
-      "updated_at": "2026-11-18 08:34:37"
+      "updated_at": "2026-11-18 08:34:37",
+      "due_date": "",
+      "follow_up_date": ""
     },
     {
       "id": 8,
@@ -170,7 +184,9 @@
       "links_files": "",
       "notes_approval_he": "אין להחריג שום ארגון לפני בדיקת לב-ארי.",
       "notes_approval_en": "Do not exclude any organization before Lev-Ari reviews.",
-      "updated_at": "2026-11-18 08:34:37"
+      "updated_at": "2026-11-18 08:34:37",
+      "due_date": "",
+      "follow_up_date": ""
     },
     {
       "id": 9,
@@ -190,7 +206,9 @@
       "links_files": "",
       "notes_approval_he": "מועד ההשלמה יתואם במשותף.",
       "notes_approval_en": "Completion timing to be agreed.",
-      "updated_at": "2026-11-18 08:34:37"
+      "updated_at": "2026-11-18 08:34:37",
+      "due_date": "",
+      "follow_up_date": ""
     },
     {
       "id": 10,
@@ -210,7 +228,9 @@
       "links_files": "",
       "notes_approval_he": "מערכת מעקב מרכזית לשיתוף הפעולה.",
       "notes_approval_en": "Central tracker for the collaboration.",
-      "updated_at": "2026-11-18 08:34:37"
+      "updated_at": "2026-11-18 08:34:37",
+      "due_date": "",
+      "follow_up_date": ""
     },
     {
       "id": 11,
@@ -230,7 +250,9 @@
       "links_files": "",
       "notes_approval_he": "אין לשלוח פניות או להתחייב לתמחור לפני קבלת אישור.",
       "notes_approval_en": "No outreach or pricing commitments before approval.",
-      "updated_at": "2026-11-18 08:34:37"
+      "updated_at": "2026-11-18 08:34:37",
+      "due_date": "",
+      "follow_up_date": ""
     },
     {
       "id": 12,
@@ -250,7 +272,9 @@
       "links_files": "",
       "notes_approval_he": "זמינות שבועית מוצעת: 2–3 שעות.",
       "notes_approval_en": "Weekly availability proposed: 2–3 hours.",
-      "updated_at": "2026-11-18 08:34:37"
+      "updated_at": "2026-11-18 08:34:37",
+      "due_date": "",
+      "follow_up_date": ""
     }
   ],
   "schools": [
@@ -271,8 +295,8 @@
       "website": "https://wgalil.ac.il/external_studies/alternative/senior_holistic_therapists/",
       "fit_opportunity_he": "התאמה גבוהה: מסלול עיסוי פעיל ביחידה אקדמית ללימודי חוץ; קהל של מטפלים בהכשרה ובהמשך מקצועי.",
       "fit_opportunity_en": "High Fit: Active massage track in an academic external studies unit; audience of therapists in training and continuing professional development.",
-      "outreach_message_he": "שלום רב,\n\nשמי אופק, ואני פונה מטעם מכבי לב-ארי.\n\nמכיוון שהיחידה ללימודי חוץ במכללה מציעה הכשרות מקצועיות בתחומי הטיפול, נשמח לבחון אפשרות לקיים אצלכם השתלמות קלינית מעשית למטפלים ולבוגרי מסלולי טיפול במגע.\n\nההשתלמות מועברת על ידי מכבי לב-ארי, בעל ניסיון של למעלה מ-25 שנה בתחום הטיפול הידני והעבודה עם ספורטאי עילית – לרבות 21 שנה בצוות הטיפול של הניו יורק יאנקיז (New York Yankees). התוכן יכול לכלול אנטומיה יישומית, חשיבה קלינית, הערכה באמצעות מגע, עבודה עם רקמות רכות וטכניקות טיפול מתקדמות.\n\nנשמח לבדוק התאמה לתוכניות ההכשרה של היחידה ולשוחח עם הגורם האחראי על לימודי החוץ וההשתלמויות.\n\nלמידע נוסף על מכבי לב-ארי: https://maccibilevari.com/he.html\n\nאשמח לדעת למי ניתן להעביר פרטים נוספים.\n\nתודה,\nאופק\n\nאתר מכבי לב-ארי: https://maccibilevari.com/he.html",
-      "outreach_message_en": "Dear External Studies Team,\n\nMy name is Ofek, reaching out on behalf of Maccabi Lev-Ari.\n\nSince the External Studies Division at Western Galilee Academic College offers professional training in manual therapy, we would love to explore hosting a practical clinical masterclass for your massage therapy students and alumni.\n\nThe workshop is led by Maccabi Lev-Ari, who brings over 25 years of experience in manual therapy and elite athletic treatment — including 21 years working with the New York Yankees. Topics can include applied anatomy, clinical reasoning, palpation assessment, soft-tissue work, and advanced treatment techniques.\n\nWe would be glad to discuss how this can complement your current curriculum with the head of external studies and professional workshops.\n\nMore information about Maccabi Lev-Ari: https://maccibilevari.com/he.html\n\nBest regards,\nOfek",
+      "outreach_message_he": "שלום רב,\n\nשמי אופק, ואני פונה אליכם מטעם מכבי לב-ארי.\n\nראיתי שהיחידה ללימודי חוץ בגליל מערבי מפעילה הכשרות מקצועיות בתחומי המגע והטיפול, ורציתי לבדוק איתכם אפשרות לשלב השתלמות קלינית מעשית עבור בוגרי המסלולים ומטפלים פעילים מהאזור.\n\nאת הסדנה מעביר מכבי לב-ארי, מטפל ידני בכיר עם ניסיון של למעלה מ-25 שנה בעבודה עם ספורטאי עילית – מתוכן 21 שנה בצוות הטיפול של הניו יורק יאנקיז (New York Yankees). הדגש במפגש הוא על פרקטיקה מהשטח: חשיבה קלינית, הערכה במגע ודיוק עבודת הידיים מול פתולוגיות נפוצות.\n\nאשמח מאוד לדעת מי אצלכם מרכז את תחום ההשתלמויות ולימודי החוץ כדי שנוכל לבדוק התאמה לתוכנית הקרובה.\n\nתודה רבה והמשך שבוע נעים,\nאופק\nלפרטים נוספים על מכבי לב-ארי: https://maccibilevari.com/he.html",
+      "outreach_message_en": "Hello,\n\nMy name is Ofek, and I'm reaching out on behalf of Maccabi Lev-Ari.\n\nSince the External Studies Division at Western Galilee Academic College runs hands-on training in manual therapy, we’d love to explore hosting a practical clinical workshop for your graduates and local practitioners.\n\nThe session is led by Maccabi Lev-Ari, who brings over 25 years of experience treating elite athletes—including 21 years on the New York Yankees medical/therapy staff. Rather than general theory, the workshop focuses on real-world clinical reasoning, palpation assessment, and refining hands-on soft-tissue work.\n\nCould you point me to the person coordinating continuing education or professional workshops so we can see if this fits your upcoming calendar?\n\nBest regards,\nOfek\nMore about Maccabi Lev-Ari: https://maccibilevari.com/he.html",
       "status": "Ready for approval",
       "response_result_he": "טרם נשלחה פנייה",
       "response_result_en": "Outreach not sent yet",
@@ -299,8 +323,8 @@
       "website": "https://medicin.org.il/",
       "fit_opportunity_he": "התאמה גבוהה מאוד: קיימים מסלולי עיסוי רפואי ובכיר, עם זיקה מפורשת לפציעות ספורט ולטכניקות מתקדמות.",
       "fit_opportunity_en": "Very High Fit: Offers Certified & Senior Medical Massage tracks with explicit focus on sports injuries and advanced techniques.",
-      "outreach_message_he": "שלום רב,\n\nשמי אופק, ואני פונה מטעם מכבי לב-ארי.\n\nלאור מסלולי העיסוי הרפואי והעיסוי הרפואי הבכיר שמכללת מדיסין מציעה, רצינו לבדוק אפשרות לקיים במכללה כיתת אמן מתקדמת לבוגרים ולתלמידים מתקדמים.\n\nמכבי לב-ארי מביא למפגש ניסיון של למעלה מ-25 שנה בטיפול ידני ובעבודה עם ספורטאי עילית – לרבות 21 שנה בצוות הטיפול של הניו יורק יאנקיז (New York Yankees). ההשתלמות מתמקדת בחיבור בין אנטומיה יישומית לחשיבה קלינית, הערכה במגע, טיפול ברקמות רכות ויישום טכניקות טיפול במקרים מעולם הספורט.\n\nנשמח לבחון יחד תוכן שישלים את ההכשרה הקיימת במכללה ויעניק למשתתפים העשרה מעשית ומעמיקה.\n\nלמידע נוסף על מכבי לב-ארי: https://maccibilevari.com/he.html\n\nהאם ניתן להפנות אותי למנהל/ת תחום העיסוי או למי שאחראי/ת על השתלמויות מקצועיות?\n\nתודה,\nאופק\n\nאתר מכבי לב-ארי: https://maccibilevari.com/he.html",
-      "outreach_message_en": "Dear Medicin College Team,\n\nMy name is Ofek, reaching out on behalf of Maccabi Lev-Ari.\n\nGiven Medicin College’s Certified and Senior Medical Massage programs, we would love to explore hosting an advanced masterclass for your senior students and graduates.\n\nMaccabi Lev-Ari brings over 25 years of clinical experience in manual therapy and working with elite athletes — including 21 years with the New York Yankees. The masterclass bridges applied anatomy with clinical reasoning, palpation assessment, soft-tissue mobilization, and sports injury case applications.\n\nCould you connect me with the Head of the Massage Department or the coordinator for professional continuing education?\n\nMore information about Maccabi Lev-Ari: https://maccibilevari.com/he.html\n\nThank you,\nOfek",
+      "outreach_message_he": "שלום רב,\n\nשמי אופק, ואני פונה אליכם מטעם מכבי לב-ארי.\n\nמכללת מדיסין מכשירה דורות של מטפלים במסלולי העיסוי הרפואי והעיסוי הרפואי הבכיר, ולכן חשבתי שיוכל להיות חיבור מצוין לכיתת אמן מתקדמת עבור תלמידי שנה ב' והבוגרים שלכם.\n\nמכבי לב-ארי מביא איתו למעלה מ-25 שנות ניסיון בטיפול ידני ובספורט תחרותי, כולל 21 שנה בצוות הטיפול של הניו יורק יאנקיז (New York Yankees). המפגש מתמקד בגשר שבין האנטומיה לבין קבלת ההחלטות בקליניקה – איך לזהות את מקור העומס דרך מגע ולעבוד בצורה מדויקת ואפקטיבית יותר עם רקמות רכות.\n\nנשמח לבנות תוכן שמשלים את הקיים אצלכם ונותן לבוגרים ערך מוסף אמיתי מהשטח. למי אפשר להעביר הצעה מסודרת או לתאם שיחה קצרה?\n\nתודה רבה,\nאופק\nאתר מכבי לב-ארי: https://maccibilevari.com/he.html",
+      "outreach_message_en": "Hello Medicin College team,\n\nMy name is Ofek, reaching out on behalf of Maccabi Lev-Ari.\n\nGiven Medicin College’s strong track record in Certified and Senior Medical Massage, I wanted to explore putting together an advanced clinical masterclass for your senior students and alumni.\n\nMaccabi Lev-Ari brings over 25 years of hands-on experience with elite athletes, including 21 years working with the New York Yankees. The focus is very practical: bridging anatomy with real-time clinical reasoning, palpation assessment, and targeted soft-tissue work drawn from sports injury cases.\n\nWe’d love to tailor it so it complements your existing curriculum. Who would be the best person to connect with regarding professional workshops?\n\nWarm regards,\nOfek\nMore about Maccabi Lev-Ari: https://maccibilevari.com/he.html",
       "status": "Ready for approval",
       "response_result_he": "טרם נשלחה פנייה",
       "response_result_en": "Outreach not sent yet",
@@ -327,8 +351,8 @@
       "website": "https://www.manualil.org/",
       "fit_opportunity_he": "התאמה מקצועית גבוהה לתוכן מתקדם ולקהל של מטפלים מנוסים; עם זאת, יש לבדוק אם קיימת חפיפה או תחרות מול תוכניות ההכשרה שלהם.",
       "fit_opportunity_en": "High professional fit for advanced content and experienced practitioners; however, evaluate potential overlap or competition with their own courses.",
-      "outreach_message_he": "שלום אייל וגבעון,\n\nשמי אופק, ואני פונה מטעם מכבי לב-ארי.\n\nראיתי ש-Manual IL מתמחה בהכשרות מתקדמות בתרפיה מנואלית, Soft Tissue Balance, ספורטתרפיה ועיסוי רפואי. לאור החיבור המקצועי הזה, רציתי לבדוק האם עשוי להיות עניין בשיתוף פעולה או בהשתלמות אורח ייעודית למטפלים.\n\nמכבי לב-ארי מביא ניסיון קליני של למעלה מ-25 שנה בטיפול ידני ובעבודה עם ספורטאי עילית – לרבות 21 שנה בצוות הטיפול של הניו יורק יאנקיז (New York Yankees). ניתן לבנות מפגש ממוקד סביב חשיבה קלינית, הערכה במגע, אנטומיה יישומית וגישות לעבודה עם רקמות רכות, בהתאם לתכנים שכבר נלמדים אצלכם.\n\nברור לנו שיש חפיפה מקצועית מסוימת בין תחומי הפעילות, ולכן הפנייה היא לבחון אפשרות לתוכן משלים ולא לחזור על הכשרות קיימות.\n\nלמידע נוסף על מכבי לב-ארי: https://maccibilevari.com/he.html\n\nאשמח לשמוע אם יש עניין בשיחה ראשונית.\n\nתודה,\nאופק\n\nאתר מכבי לב-ארי: https://maccibilevari.com/he.html",
-      "outreach_message_en": "Hi Eyal and Givon,\n\nMy name is Ofek, reaching out on behalf of Maccabi Lev-Ari.\n\nSeeing Manual IL’s focus on advanced manual therapy, Soft Tissue Balance, sports therapy, and medical massage, I wanted to explore whether there might be interest in a collaborative guest masterclass for practicing therapists.\n\nMaccabi Lev-Ari brings over 25 years of clinical experience in manual therapy and elite athletic treatment — including 21 years with the New York Yankees. We can structure a focused workshop around clinical reasoning, palpation assessment, applied anatomy, and soft-tissue approaches tailored to complement—rather than duplicate—your existing curriculum.\n\nMore information about Maccabi Lev-Ari: https://maccibilevari.com/he.html\n\nI would love to hear if you are open to a brief introductory call.\n\nBest,\nOfek",
+      "outreach_message_he": "היי אייל וגבעון,\n\nשמי אופק, ואני פונה אליכם מטעם מכבי לב-ארי.\n\nאני עוקב אחרי העשייה של Manual IL והרמה הגבוהה שאתם מביאים בתרפיה מנואלית, Soft Tissue Balance וספורטתרפיה. דווקא מתוך ההיכרות עם הקהל המקצועי שמגיע אליכם, חשבתי שיכול להיות חיבור מעניין מאוד למפגש אורח של מכבי.\n\nמכבי לב-ארי מביא ניסיון שטח של מעל 25 שנה, מתוכן 21 שנה בצוות הטיפול של הניו יורק יאנקיז (New York Yankees). הרעיון הוא להביא זווית פרקטית של עבודה יומיומית עם ספורטאי עילית – אבחון מהיר במגע, חשיבה קלינית תחת עומס ודיוק טכניקות – כתוספת מעשירה ומשלימה למטפלים שכבר שולטים ביסודות שאצלכם.\n\nאם זה נשמע לכם מסקרן, אשמח שנדבר קצרות ונבדוק אם יש פה חיבור נכון לשני הצדדים.\n\nתודה,\nאופק\nhttps://maccibilevari.com/he.html",
+      "outreach_message_en": "Hi Eyal and Givon,\n\nMy name is Ofek, reaching out on behalf of Maccabi Lev-Ari.\n\nI know the high bar Manual IL sets in advanced manual therapy, Soft Tissue Balance, and sports therapy. Knowing the caliber of practitioners you work with, I thought a guest masterclass with Maccabi could be a really compelling fit.\n\nMaccabi brings over 25 years of clinical experience, including 21 years on the New York Yankees therapy staff. The idea isn’t to repeat fundamentals, but to share a practical perspective from daily work with elite athletes—clinical reasoning under pressure, sharp palpation assessment, and subtle soft-tissue refinements—specifically tailored to complement your current tracks.\n\nIf you’re open to it, I’d love to hop on a quick call to see if there’s a good fit.\n\nBest,\nOfek\nhttps://maccibilevari.com/he.html",
       "status": "Ready for approval",
       "response_result_he": "טרם נשלחה פנייה",
       "response_result_en": "Outreach not sent yet",
@@ -355,8 +379,8 @@
       "website": "https://bespirit.co.il/",
       "fit_opportunity_he": "התאמה גבוהה: מציעה הכשרות בעיסוי רפואי והשתלמויות למטפלים בכירים, כלומר קהל יעד מתאים לכיתת אמן מתקדמת.",
       "fit_opportunity_en": "High Fit: Offers medical massage certifications and continuing education for senior therapists—ideal target audience for an advanced masterclass.",
-      "outreach_message_he": "שלום רב,\n\nשמי אופק, ואני פונה מטעם מכבי לב-ארי.\n\nמכיוון שמכללת כרכור מציעה הכשרות בעיסוי רפואי והשתלמויות למטפלים, נשמח לבדוק אפשרות לקיים אצלכם כיתת אמן מתקדמת לבוגרי המכללה ולתלמידים בעלי רקע מתאים.\n\nההשתלמות מועברת על ידי מכבי לב-ארי, בעל ניסיון של למעלה מ-25 שנה בטיפול ידני ובעבודה עם ספורטאי עילית – לרבות 21 שנה בצוות הטיפול של הניו יורק יאנקיז (New York Yankees). היא משלבת אנטומיה יישומית, חשיבה קלינית, הערכה במגע, עבודה עם רקמות רכות וטכניקות טיפול מעשיות.\n\nנשמח להתאים את התוכן לרמת המשתתפים ולתחומי הלימוד במכללה, ולבחון אפשרות לשיתוף פעולה מקצועי.\n\nלמידע נוסף על מכבי לב-ארי: https://maccibilevari.com/he.html\n\nאשמח לדעת מי הגורם המתאים לשיחה בנושא השתלמויות וקורסי המשך.\n\nתודה,\nאופק\n\nאתר מכבי לב-ארי: https://maccibilevari.com/he.html",
-      "outreach_message_en": "Dear Karkur College Team,\n\nMy name is Ofek, reaching out on behalf of Maccabi Lev-Ari.\n\nSince Karkur College offers medical massage training and continuing education for practitioners, we would love to explore hosting an advanced clinical masterclass for your alumni and senior students.\n\nLed by Maccabi Lev-Ari—with over 25 years of experience in manual therapy and elite athletic treatment, including 21 years with the New York Yankees—the workshop integrates applied anatomy, clinical reasoning, palpation assessment, soft-tissue work, and practical techniques.\n\nCould you let me know the right person to speak with regarding professional workshops and continuing education?\n\nMore information about Maccabi Lev-Ari: https://maccibilevari.com/he.html\n\nThank you,\nOfek",
+      "outreach_message_he": "שלום לצוות מכללת כרכור,\n\nשמי אופק, ואני פונה אליכם מטעם מכבי לב-ארי.\n\nהגישה הטיפולית המשלבת שמובילה את מכללת כרכור וההכשרות בעיסוי רפואי מתחברות מאוד לאופן שבו מכבי עובד. נשמח לבדוק אפשרות לקיים אצלכם סדנה מעשית או כיתת אמן לבוגרי המכללה ולסטודנטים מתקדמים.\n\nלמכבי לב-ארי ניסיון של למעלה מ-25 שנה בטיפול ידני ובעבודה עם ספורטאים ברמות הגבוהות ביותר, כולל 21 שנה בצוות הטיפול של הניו יורק יאנקיז (New York Yankees). במפגש הוא מחבר בין הבנה עמוקה של הגוף, הקשבה במגע וחשיבה קלינית, לבין טכניקות עבודה מדויקות על רקמות רכות.\n\nאשמח לדעת מי אצלכם מרכז את תחום ההשתלמויות ולימודי ההמשך כדי שנוכל לבחון יחד התאמה.\n\nתודה מראש,\nאופק\nלמידע נוסף על מכבי: https://maccibilevari.com/he.html",
+      "outreach_message_en": "Hello Karkur College team,\n\nMy name is Ofek, reaching out on behalf of Maccabi Lev-Ari.\n\nKarkur College’s holistic approach to medical massage and practitioner training aligns really well with Maccabi’s style of work. We’d love to explore hosting a practical clinical masterclass for your alumni and advanced students.\n\nMaccabi Lev-Ari has over 25 years of experience in manual therapy and elite sports care, including 21 years with the New York Yankees. His sessions blend attentive palpation, clinical reasoning, and applied anatomy with precise, hands-on soft-tissue techniques.\n\nCould you let me know who handles continuing education and guest workshops at the college?\n\nThank you,\nOfek\nhttps://maccibilevari.com/he.html",
       "status": "Ready for approval",
       "response_result_he": "טרם נשלחה פנייה",
       "response_result_en": "Outreach not sent yet",
@@ -383,8 +407,8 @@
       "website": "https://www.broshim.tau.org.il/",
       "fit_opportunity_he": "התאמה גבוהה: מסלול עיסוי רפואי משולב משלב עיסוי שוודי וכלים טיפוליים/רפואיים. פרטי המסלול נמצאו במאגר לימודים חיצוני; יש לוודא שהוא עדיין פעיל מול הקמפוס.",
       "fit_opportunity_en": "High Fit: Integrated medical massage track combining Swedish massage with clinical/therapeutic tools. Verify current program activity directly with the campus.",
-      "outreach_message_he": "שלום רב,\n\nשמי אופק, ואני פונה מטעם מכבי לב-ארי.\n\nקמפוס ברושים פועל בתחום הרפואה המשלימה ומכשיר מטפלים במקצועות המגע. נשמח לבדוק אפשרות להציע לתלמידים מתקדמים ולבוגרים השתלמות קלינית מעשית שתעמיק את הידע והכלים שלהם בתחום הטיפול הידני.\n\nמכבי לב-ארי מביא ניסיון של למעלה מ-25 שנה בטיפול ידני ובעבודה עם ספורטאי עילית – לרבות 21 שנה בצוות הטיפול של הניו יורק יאנקיז (New York Yankees). נושאי ההשתלמות יכולים לכלול אנטומיה יישומית, חשיבה קלינית, הערכה באמצעות מגע, עבודה עם רקמות רכות וטכניקות טיפול מתקדמות.\n\nנשמח לשוחח עם הגורם האחראי על תוכניות הלימוד או ההשתלמויות ולבחון התאמה לתכנים הנלמדים בקמפוס.\n\nלמידע נוסף על מכבי לב-ארי: https://maccibilevari.com/he.html\n\nתודה,\nאופק\n\nאתר מכבי לב-ארי: https://maccibilevari.com/he.html",
-      "outreach_message_en": "Dear Broshim Campus Team,\n\nMy name is Ofek, reaching out on behalf of Maccabi Lev-Ari.\n\nAs Broshim Campus trains practitioners in complementary medicine and manual therapies, we would love to explore offering a practical clinical masterclass for your advanced students and alumni.\n\nMaccabi Lev-Ari brings over 25 years of experience in manual therapy and working with elite athletes — including 21 years with the New York Yankees. Workshop topics can include applied anatomy, clinical reasoning, palpation assessment, soft-tissue therapy, and advanced clinical techniques.\n\nMore information about Maccabi Lev-Ari: https://maccibilevari.com/he.html\n\nThank you,\nOfek",
+      "outreach_message_he": "שלום לצוות קמפוס ברושים,\n\nשמי אופק, ואני פונה מטעם מכבי לב-ארי.\n\nכמי שמכשירים מטפלים במקצועות המגע בתוך סביבה שנושמת ספורט ותנועה באוניברסיטת תל אביב, חשבתי שהשתלמות קלינית של מכבי לב-ארי תוכל לעניין מאוד את הסטודנטים המתקדמים והבוגרים שלכם.\n\nמכבי מביא איתו למעלה מ-25 שנות ניסיון בטיפול ידני ובעבודה צמודה עם ספורטאי עילית – לרבות 21 שנה בצוות הטיפול של הניו יורק יאנקיז (New York Yankees). הסדנה מתמקדת בפרקטיקה קלינית: איך ניגשים למטופל או ספורטאי עם כאב מורכב, איך מאתרים מגבלות במגע ואיך בוחרים את הטכניקה הנכונה לרקמות הרכות.\n\nנשמח לשוחח עם הגורם האחראי על השתלמויות הבוגרים ולבדוק אפשרות לשיתוף פעולה.\n\nתודה רבה,\nאופק\nאתר מכבי לב-ארי: https://maccibilevari.com/he.html",
+      "outreach_message_en": "Hello Broshim Campus team,\n\nMy name is Ofek, reaching out on behalf of Maccabi Lev-Ari.\n\nGiven Broshim Campus’s unique setting at the Tel Aviv University Sports Club and your focus on training manual therapists, I thought a hands-on masterclass with Maccabi Lev-Ari would resonate strongly with your senior students and alumni.\n\nMaccabi brings over 25 years of clinical experience in manual therapy and elite athletics, including 21 years working with the New York Yankees. The workshop is heavily practical—focusing on how to assess complex movement/pain presentations by touch, sharpen clinical reasoning, and apply targeted soft-tissue techniques.\n\nI’d be glad to connect with whoever oversees alumni workshops and continuing education to explore this further.\n\nBest regards,\nOfek\nhttps://maccibilevari.com/he.html",
       "status": "Ready for approval",
       "response_result_he": "טרם נשלחה פנייה",
       "response_result_en": "Outreach not sent yet",
@@ -411,8 +435,8 @@
       "website": "https://www.henot.co.il/",
       "fit_opportunity_he": "התאמה גבוהה מאוד: באתר הרשמי מופיע קורס עיסוי רפואי שנתי, לימוד פתולוגיות גופניות וסדנאות עיסוי המיועדות לבעלי תעודה.",
       "fit_opportunity_en": "Very High Fit: Official website features an annual medical massage course, pathology studies, and specialized workshops for certified practitioners.",
-      "outreach_message_he": "שלום רב,\n\nשמי אופק, ואני פונה מטעם מכבי לב-ארי.\n\nראינו שמכללת הנות מציעה הכשרה בעיסוי רפואי וכן סדנאות והשתלמויות לבעלי רקע בתחום. רצינו לבדוק אפשרות לקיים אצלכם השתלמות מתקדמת המיועדת לבוגרי מסלול העיסוי ולמטפלים פעילים.\n\nמכבי לב-ארי מביא ניסיון של למעלה מ-25 שנה בטיפול ידני ובעבודה עם ספורטאי עילית – לרבות 21 שנה בצוות הטיפול של הניו יורק יאנקיז (New York Yankees). ההשתלמות תתמקד בהעמקת החשיבה הקלינית, אנטומיה יישומית, הערכה במגע, טיפול ברקמות רכות וטכניקות מעשיות מעולם הטיפול בספורט.\n\nנשמח להתאים את רמת התוכן לקהל היעד ולבחון יחד אפשרות לשיתוף פעולה.\n\nלמידע נוסף על מכבי לב-ארי: https://maccibilevari.com/he.html\n\nלמי ניתן לפנות בנושא השתלמויות מקצועיות?\n\nתודה,\nאופק\n\nאתר מכבי לב-ארי: https://maccibilevari.com/he.html",
-      "outreach_message_en": "Dear Henot College Team,\n\nMy name is Ofek, reaching out on behalf of Maccabi Lev-Ari.\n\nWe saw that Henot College offers medical massage certification as well as continuing education workshops for certified practitioners. We would love to explore hosting an advanced masterclass for your massage alumni and active therapists.\n\nMaccabi Lev-Ari brings over 25 years of experience in manual therapy and elite athletic treatment — including 21 years with the New York Yankees. The workshop focuses on clinical reasoning, applied anatomy, palpation assessment, soft-tissue treatment, and sports therapy techniques.\n\nMore information about Maccabi Lev-Ari: https://maccibilevari.com/he.html\n\nWho is the best person to speak with regarding professional workshops?\n\nThank you,\nOfek",
+      "outreach_message_he": "שלום רב (ליפעת / צוות מכללת הנות),\n\nשמי אופק, ואני פונה אליכם מטעם מכבי לב-ארי.\n\nראיתי שמכללת הנות מקיימת לצד מסלול העיסוי הרפואי גם סדנאות והשתלמויות המשך למטפלים, ורציתי לבדוק אפשרות לקיים אצלכם מפגש העשרה מתקדם לבוגרים ולמטפלים פעילים.\n\nמכבי לב-ארי הוא מטפל ידני בעל ניסיון של למעלה מ-25 שנה, מתוכן 21 שנה בצוות הטיפול של הניו יורק יאנקיז (New York Yankees). הדגש בהשתלמות הוא על חיזוק הביטחון הקליני של המטפל – דרך הערכה מדויקת במגע, הבנת עומסים ברקמות הרכות וכלים פרקטיים שאפשר ליישם בקליניקה כבר למחרת.\n\nאשמח לשמוע אם הנושא רלוונטי ולדבר עם הגורם המתאים אצלכם.\n\nתודה והמשך יום נעים,\nאופק\nhttps://maccibilevari.com/he.html",
+      "outreach_message_en": "Hello Henot College team,\n\nMy name is Ofek, reaching out on behalf of Maccabi Lev-Ari.\n\nI noticed Henot College offers continuing education workshops alongside your medical massage certification, and wanted to explore hosting an advanced hands-on session for your graduates and active therapists.\n\nMaccabi Lev-Ari brings over 25 years of experience in manual therapy and elite sports care, including 21 years on the New York Yankees therapy staff. The session is designed to build real clinical confidence—sharpening palpation assessment, understanding soft-tissue load, and giving therapists practical tools they can use immediately.\n\nWho would be the best person to speak with about scheduling a professional workshop?\n\nThank you,\nOfek\nhttps://maccibilevari.com/he.html",
       "status": "Ready for approval",
       "response_result_he": "טרם נשלחה פנייה",
       "response_result_en": "Outreach not sent yet",
@@ -439,8 +463,8 @@
       "website": "https://wclinic.ilbiz.co.il/",
       "fit_opportunity_he": "התאמה טובה: מוסד ייעודי ללימודי עיסוי רפואי; יש לאמת את היקף הפעילות והאם קיימים קורסים מתקדמים.",
       "fit_opportunity_en": "Good Fit: Dedicated institution for medical massage studies; verify current activity volume and advanced course offerings.",
-      "outreach_message_he": "שלום רב,\n\nשמי אופק, ואני פונה מטעם מכבי לב-ארי.\n\nרציתי לבדוק אפשרות לקיים במכון וולפסון השתלמות מקצועית בתחום הטיפול הידני והעיסוי, המיועדת לבוגרי הכשרות ולמטפלים בעלי רקע מתאים.\n\nמכבי לב-ארי מביא ניסיון של למעלה מ-25 שנה בטיפול ידני ובעבודה עם ספורטאי עילית – לרבות 21 שנה בצוות הטיפול של הניו יורק יאנקיז (New York Yankees). ההשתלמות יכולה להתמקד באנטומיה יישומית, חשיבה קלינית, הערכה במגע, עבודה עם רקמות רכות וטכניקות טיפול מתקדמות.\n\nנשמח להבין אילו מסלולי עיסוי והכשרות פעילים כיום במכון, ולבדוק האם ניתן לבנות פעילות שתתאים לתלמידים ולבוגרים שלכם.\n\nלמידע נוסף על מכבי לב-ארי: https://maccibilevari.com/he.html\n\nאשמח אם תוכלו להפנות אותי לאדם האחראי על תוכניות הלימוד וההשתלמויות.\n\nתודה,\nאופק\n\nאתר מכבי לב-ארי: https://maccibilevari.com/he.html",
-      "outreach_message_en": "Dear Wolfson Institute Team,\n\nMy name is Ofek, reaching out on behalf of Maccabi Lev-Ari.\n\nI wanted to explore hosting a professional manual therapy and medical massage workshop at the Wolfson Institute for graduates and practicing therapists.\n\nMaccabi Lev-Ari brings over 25 years of clinical experience in manual therapy and working with elite athletes — including 21 years with the New York Yankees. The workshop can focus on applied anatomy, clinical reasoning, palpation assessment, soft-tissue work, and advanced treatment techniques.\n\nMore information about Maccabi Lev-Ari: https://maccibilevari.com/he.html\n\nCould you direct me to the person responsible for study programs and continuing education?\n\nThank you,\nOfek",
+      "outreach_message_he": "שלום רב,\n\nשמי אופק, ואני פונה אליכם מטעם מכבי לב-ארי.\n\nרציתי לבדוק אילו מסלולי עיסוי והכשרות מטפלים פעילים כיום במכון וולפסון, והאם יש אצלכם מקום להשתלמות מקצועית ממוקדת לבוגרים ולמטפלים בעלי רקע במגע.\n\nמכבי לב-ארי מביא ניסיון של מעל 25 שנה בטיפול ידני ובעבודה עם ספורטאי עילית – כולל 21 שנה בצוות הטיפול של הניו יורק יאנקיז (New York Yankees). ההשתלמות עוסקת בחשיבה קלינית, הערכה במגע וטכניקות מתקדמות לעבודה עם רקמות רכות, וניתנת להתאמה מלאה לרמת המשתתפים.\n\nאשמח אם תוכלו להפנות אותי לגורם המרכז את תחום ההשתלמויות במכון.\n\nתודה רבה,\nאופק\nלמידע נוסף: https://maccibilevari.com/he.html",
+      "outreach_message_en": "Hello Wolfson Institute team,\n\nMy name is Ofek, reaching out on behalf of Maccabi Lev-Ari.\n\nI wanted to check which massage and manual therapy tracks are currently active at the Wolfson Institute, and whether you’d be open to hosting a focused continuing-education workshop for graduates and practicing therapists.\n\nMaccabi Lev-Ari brings over 25 years of clinical experience in manual therapy and elite athletics, including 21 years working with the New York Yankees. The workshop focuses on clinical reasoning, palpation assessment, and advanced soft-tissue work, and can be tailored to your students’ level.\n\nCould you connect me with the person overseeing your study programs or professional workshops?\n\nThank you,\nOfek\nhttps://maccibilevari.com/he.html",
       "status": "Ready for approval",
       "response_result_he": "טרם נשלחה פנייה",
       "response_result_en": "Outreach not sent yet",
@@ -467,8 +491,8 @@
       "website": "https://mtacademy.co.il/",
       "fit_opportunity_he": "התאמה מקצועית גבוהה: קהל יעד של מטפלים ומאמנים, הכשרות בעיסוי משולב, ספורטתרפיה ותחומי טיפול מתקדמים. יש לבדוק חפיפה מקצועית/מסחרית לפני פנייה.",
       "fit_opportunity_en": "High Professional Fit: Target audience of therapists and coaches, courses in integrated massage, sports therapy, and manual therapy. Review commercial/professional overlap prior to outreach.",
-      "outreach_message_he": "שלום שימי,\n\nשמי אופק, ואני פונה מטעם מכבי לב-ארי.\n\nאני מכיר את הפעילות של בית הספר למקצועות הטיפול ואת הדגש שאתם שמים על הכשרות עומק למטפלים בתחומי המגע, התנועה והספורטתרפיה.\n\nרציתי לבדוק אפשרות לשיתוף פעולה מקצועי סביב כיתת אמן בהנחיית מכבי לב-ארי, בעל ניסיון של למעלה מ-25 שנה בטיפול ידני ובעבודה עם ספורטאי עילית – לרבות 21 שנה בצוות הטיפול של הניו יורק יאנקיז (New York Yankees).\n\nאפשר לבחון מפגש ממוקד שיעסוק בניסיון קליני מהשטח, חשיבה קלינית, אנטומיה יישומית, הערכה במגע ועבודה עם רקמות רכות. כמובן, נרצה לתאם את התוכן כך שישלים את ההכשרות הקיימות אצלכם ולא יחזור עליהן.\n\nלמידע נוסף על מכבי לב-ארי: https://maccibilevari.com/he.html\n\nאם זה רלוונטי, אשמח לתאם שיחה קצרה ולבחון אפשרות לשיתוף פעולה.\n\nתודה,\nאופק\n\nאתר מכבי לב-ארי: https://maccibilevari.com/he.html",
-      "outreach_message_en": "Hi Shimi,\n\nMy name is Ofek, reaching out on behalf of Maccabi Lev-Ari.\n\nI am familiar with the School of Therapeutic Professions (MT Academy) and your emphasis on in-depth training in touch, movement, and sports therapy.\n\nI wanted to explore a professional collaboration around a masterclass led by Maccabi Lev-Ari, who has over 25 years of experience in manual therapy and working with elite athletes — including 21 years with the New York Yankees. We can design a focused session covering field clinical experience, clinical reasoning, applied anatomy, palpation assessment, and soft-tissue work—tailored to complement your existing courses.\n\nMore information about Maccabi Lev-Ari: https://maccibilevari.com/he.html\n\nIf relevant, I would love to schedule a brief call to explore collaboration.\n\nBest,\nOfek",
+      "outreach_message_he": "היי שימי,\n\nשמי אופק, ואני פונה אליך מטעם מכבי לב-ארי.\n\nאני מכיר היטב את הגישה של בית הספר למקצועות הטיפול ואת ההשקעה שלכם בהכשרות עומק במגע, תנועה וספורטתרפיה. חשבתי שיכול להיות חיבור טבעי ומעניין מאוד לכיתת אמן אורח בהנחיית מכבי.\n\nמכבי מביא איתו מעל 25 שנות ניסיון קליני ועבודה יומיומית עם ספורטאי עילית, כולל 21 שנה בצוות הטיפול של הניו יורק יאנקיז (New York Yankees). המטרה במפגש היא להביא למטפלים תובנות וטכניקות מהשטח – איך לחשוב קלינית, לאבחן במגע ולפתור בעיות רקמה רכה מורכבות – באופן שמשלים את הקורסים שלכם ולא חוזר על חומר קיים.\n\nאם זה מדבר אליך, אשמח שנקבע שיחה קצרה ונראה אם יש פה הזדמנות טובה לשיתוף פעולה.\n\nתודה,\nאופק\nhttps://maccibilevari.com/he.html",
+      "outreach_message_en": "Hi Shimi,\n\nMy name is Ofek, reaching out on behalf of Maccabi Lev-Ari.\n\nI’m very familiar with MT Academy’s emphasis on deep, serious training across touch, movement, and sports therapy. Because of that standard, I thought a guest masterclass led by Maccabi could be a natural fit for your community.\n\nMaccabi brings over 25 years of clinical experience—including 21 years on the New York Yankees therapy staff. The session focuses on real-world field insights: clinical reasoning, hands-on palpation, and solving complex soft-tissue cases, designed specifically to complement your existing courses rather than overlap with them.\n\nIf this sounds relevant, I’d love to set up a brief call to explore working together.\n\nBest,\nOfek\nhttps://maccibilevari.com/he.html",
       "status": "Ready for approval",
       "response_result_he": "טרם נשלחה פנייה",
       "response_result_en": "Outreach not sent yet",
@@ -495,8 +519,8 @@
       "website": "https://www.mediteva.com/",
       "fit_opportunity_he": "התאמה גבוהה: קורס עיסוי רפואי הכולל טכניקות עיסוי שונות ותרגול מעשי; מיקום נגיש במרכז.",
       "fit_opportunity_en": "High Fit: Medical massage course covering diverse techniques and hands-on practice; accessible central location.",
-      "outreach_message_he": "שלום רב,\n\nשמי אופק, ואני פונה מטעם מכבי לב-ארי.\n\nראינו שמכללת מדיטבע מציעה לימודי עיסוי רפואי לצד הכשרות בתחומי המגע והגוף. נשמח לבדוק אפשרות לקיים אצלכם השתלמות קלינית מעשית לבוגרי המסלול ולתלמידים מתקדמים.\n\nמכבי לב-ארי מביא ניסיון של למעלה מ-25 שנה בטיפול ידני ובעבודה עם ספורטאי עילית – לרבות 21 שנה בצוות הטיפול של הניו יורק יאנקיז (New York Yankees). ההשתלמות יכולה להעמיק את החיבור בין אנטומיה ופיזיולוגיה לבין חשיבה קלינית, הערכה במגע, עבודה עם רקמות רכות וטכניקות טיפול מעשיות.\n\nנשמח להתאים את התוכן לתוכנית הלימודים ולרמת המשתתפים, ולבדוק אפשרות לקיים פעילות מקצועית משותפת.\n\nלמידע נוסף על מכבי לב-ארי: https://maccibilevari.com/he.html\n\nאשמח לדעת מי הגורם המתאים לשוחח איתו בנושא.\n\nתודה,\nאופק\n\nאתר מכבי לב-ארי: https://maccibilevari.com/he.html",
-      "outreach_message_en": "Dear Mediteva College Team,\n\nMy name is Ofek, reaching out on behalf of Maccabi Lev-Ari.\n\nSeeing that Mediteva College offers medical massage studies alongside manual therapy training, we would love to explore hosting a practical clinical masterclass for your graduates and advanced students.\n\nMaccabi Lev-Ari brings over 25 years of experience in manual therapy and working with elite athletes — including 21 years with the New York Yankees. The workshop deepens the connection between anatomy/physiology and clinical reasoning, palpation assessment, soft-tissue work, and hands-on techniques.\n\nMore information about Maccabi Lev-Ari: https://maccibilevari.com/he.html\n\nWho would be the appropriate contact person to discuss this with?\n\nThank you,\nOfek",
+      "outreach_message_he": "שלום לצוות מכללת מדיטבע,\n\nשמי אופק, ואני פונה אליכם מטעם מכבי לב-ארי.\n\nראיתי שמדיטבע משלבת לימודי עיסוי רפואי והכשרות במגע, ורציתי לבדוק אפשרות לקיים אצלכם השתלמות קלינית מעשית לבוגרי המכללה ולסטודנטים מתקדמים.\n\nמכבי לב-ארי מביא ניסיון של למעלה מ-25 שנה בטיפול ידני ובעבודה עם ספורטאי עילית – לרבות 21 שנה בצוות הטיפול של הניו יורק יאנקיז (New York Yankees). במפגש הוא מדגים איך לתרגם ידע אנטומי לחשיבה קלינית מדויקת, זיהוי במגע ועבודה אפקטיבית על רקמות רכות.\n\nנשמח להתאים את התוכן לתוכנית הלימודים שלכם. מי אצלכם הכתובת הנכונה לשיחה בנושא?\n\nתודה רבה,\nאופק\nhttps://maccibilevari.com/he.html",
+      "outreach_message_en": "Hello Mediteva College team,\n\nMy name is Ofek, reaching out on behalf of Maccabi Lev-Ari.\n\nSeeing Mediteva College’s medical massage and manual therapy programs, we’d love to explore hosting a practical clinical masterclass for your alumni and senior students.\n\nMaccabi Lev-Ari brings over 25 years of experience in manual therapy and elite athletic care—including 21 years with the New York Yankees. The workshop shows practitioners how to translate anatomical knowledge into sharp clinical reasoning, palpation assessment, and effective soft-tissue treatment.\n\nWho would be the right person to speak with about coordinating this?\n\nThank you,\nOfek\nhttps://maccibilevari.com/he.html",
       "status": "Ready for approval",
       "response_result_he": "טרם נשלחה פנייה",
       "response_result_en": "Outreach not sent yet",
@@ -523,8 +547,8 @@
       "website": "https://www.tmurot.org.il/",
       "fit_opportunity_he": "התאמה גבוהה: באתר הרשמי מופיעים לימודי עיסוי משולב וקורס עיסוי לבעלי רקע טיפולי במקצועות המגע; קיימות שלוחות בתל אביב ובחיפה.",
       "fit_opportunity_en": "High Fit: Official website features integrated massage studies and advanced courses for practitioners with touch-therapy backgrounds; campuses in Tel Aviv and Haifa.",
-      "outreach_message_he": "שלום גלעד,\n\nשמי אופק, ואני פונה מטעם מכבי לב-ארי.\n\nראיתי שמכללת תמורות מציעה לימודי עיסוי משולב, עיסוי רפואי, רקמות עמוקות וכן קורסי המשך לבעלי רקע טיפולי במקצועות המגע. לכן חשבתי שיכולה להיות התאמה להשתלמות מתקדמת המיועדת לבוגרי המכללה ולמטפלים פעילים.\n\nמכבי לב-ארי מביא ניסיון של למעלה מ-25 שנה בטיפול ידני ובעבודה עם ספורטאי עילית – לרבות 21 שנה בצוות הטיפול של הניו יורק יאנקיז (New York Yankees). ההשתלמות יכולה להעמיק את הידע הקיים בתחומי האנטומיה היישומית, החשיבה הקלינית, ההערכה במגע והעבודה המעשית עם רקמות רכות.\n\nנשמח לבחון יחד תוכן שישלים את מסלולי העיסוי וההכשרות הקיימות בתמורות, ולא יחזור על חומר שכבר נלמד.\n\nלמידע נוסף על מכבי לב-ארי: https://maccibilevari.com/he.html\n\nאשמח לשוחח ולבדוק אם יש עניין בשיתוף פעולה.\n\nתודה,\nאופק\n\nאתר מכבי לב-ארי: https://maccibilevari.com/he.html",
-      "outreach_message_en": "Hi Gilad,\n\nMy name is Ofek, reaching out on behalf of Maccabi Lev-Ari.\n\nSeeing that Tmurot College offers integrated massage, medical massage, deep tissue, and continuing education courses for touch-therapy practitioners, I thought there could be a great fit for an advanced masterclass for your alumni and active therapists.\n\nMaccabi Lev-Ari brings over 25 years of experience in manual therapy and working with elite athletes — including 21 years with the New York Yankees. The workshop deepens practical skills in applied anatomy, clinical reasoning, palpation assessment, and soft-tissue therapy, tailored to complement Tmurot’s existing tracks.\n\nMore information about Maccabi Lev-Ari: https://maccibilevari.com/he.html\n\nI would be glad to speak and explore potential collaboration.\n\nThank you,\nOfek",
+      "outreach_message_he": "היי גלעד,\n\nשמי אופק, ואני פונה אליך מטעם מכבי לב-ארי.\n\nראיתי שבתמורות יש מגוון רחב של מסלולי עיסוי רפואי, רקמות עמוקות וקורסי המשך למטפלים, וחשבתי שמפגש מתקדם עם מכבי יוכל להיות תוספת נהדרת לבוגרים ולמטפלים הפעילים של המכללה.\n\nלמכבי לב-ארי ניסיון של למעלה מ-25 שנה בטיפול ידני ובעבודה עם ספורטאי עילית – מתוכן 21 שנה בצוות הטיפול של הניו יורק יאנקיז (New York Yankees). הרעיון הוא להתמקד בחיבור שבין הערכה מדויקת במגע, חשיבה קלינית וטכניקות רקמות רכות מהשטח, תוך התאמה מלאה למה שכבר נלמד בתמורות כדי להביא זווית חדשה ומשלימה.\n\nאשמח לשוחח איתך קצרות ולבדוק אם יש עניין בשיתוף פעולה.\n\nתודה רבה,\nאופק\nhttps://maccibilevari.com/he.html",
+      "outreach_message_en": "Hi Gilad,\n\nMy name is Ofek, reaching out on behalf of Maccabi Lev-Ari.\n\nSeeing Tmurot’s depth in medical massage, deep tissue, and continuing education for practitioners, I thought an advanced session with Maccabi could be a great addition for your alumni and active therapists.\n\nMaccabi brings over 25 years of manual therapy experience with elite athletes—including 21 years on the New York Yankees therapy staff. We’d focus on connecting sharp palpation assessment, clinical reasoning, and field-tested soft-tissue work, tailored to complement what you already teach at Tmurot.\n\nI’d love to have a quick chat and see if there’s interest in collaborating.\n\nBest regards,\nOfek\nhttps://maccibilevari.com/he.html",
       "status": "Ready for approval",
       "response_result_he": "טרם נשלחה פנייה",
       "response_result_en": "Outreach not sent yet",
@@ -1751,6 +1775,7 @@
     "totalSchoolRecords": 24,
     "outreachPrepared": 10,
     "athleticGroupsTotal": 30,
-    "athleticGroupsResearched": 0
+    "athleticGroupsResearched": 0,
+    "onHoldTasks": 0
   }
 }

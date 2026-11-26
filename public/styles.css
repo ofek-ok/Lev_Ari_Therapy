@@ -862,8 +862,41 @@ html, body {
 .status-inprogress, .status-sent { background: var(--blue-100); color: var(--blue-700); }
 .status-approval { background: var(--amber-100); color: var(--amber-700); }
 .status-notstarted { background: var(--bg-muted); color: var(--text-secondary); }
+.status-onhold { background: #F3E8FF; color: #7E22CE; border: 1px solid #E9D5FF; }
 .status-donotduplicate { background: var(--rose-100); color: var(--rose-700); }
 .status-relationship { background: var(--purple-100); color: var(--purple-700); }
+
+.task-dates-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.task-date-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-light);
+  color: var(--text-secondary);
+}
+
+.task-date-chip.overdue {
+  background: var(--rose-100);
+  border-color: #FECDD3;
+  color: var(--rose-700);
+}
+
+.task-date-chip.followup {
+  background: var(--amber-50);
+  border-color: #FDE68A;
+  color: var(--amber-700);
+}
 
 .priority-badge {
   display: inline-flex;

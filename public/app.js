@@ -59,6 +59,7 @@ const I18N = {
 
     statusNotStarted: 'טרם התחיל',
     statusInProgress: 'בביצוע',
+    statusOnHold: 'בהמתנה (On hold)',
     statusCompleted: 'הושלם',
     statusReadyForApproval: 'ממתין לאישור',
     statusApproved: 'מאושר לשליחה',
@@ -92,6 +93,9 @@ const I18N = {
 
     colPriority: 'עדיפות',
     colStatus: 'סטטוס',
+    colDueDate: 'תאריך יעד',
+    colFollowUpDate: 'תאריך Follow-up',
+    dueDateOverdue: 'באיחור',
     colDeliverable: 'תוצר / תוצאה',
     colNextAction: 'הפעולה הבאה',
     colNotes: 'הערות / אישור',
@@ -185,6 +189,7 @@ const I18N = {
 
     statusNotStarted: 'Not started',
     statusInProgress: 'In progress',
+    statusOnHold: 'On hold',
     statusCompleted: 'Completed',
     statusReadyForApproval: 'Ready for approval',
     statusApproved: 'Approved',
@@ -218,6 +223,9 @@ const I18N = {
 
     colPriority: 'Priority',
     colStatus: 'Status',
+    colDueDate: 'Due Date',
+    colFollowUpDate: 'Follow-up Date',
+    dueDateOverdue: 'Overdue',
     colDeliverable: 'Deliverable / Output',
     colNextAction: 'Next Action',
     colNotes: 'Notes / Approval',
@@ -352,6 +360,7 @@ class OperationsApp {
 
     const totalTasks = tasks.length;
     const tasksInProgress = tasks.filter(t => t.status.toLowerCase() === 'in progress').length;
+    const onHoldTasks = tasks.filter(t => t.status.toLowerCase() === 'on hold').length;
     const completedTasks = tasks.filter(t => ['completed', 'done'].includes(t.status.toLowerCase())).length;
     const notStartedTasks = tasks.filter(t => t.status.toLowerCase() === 'not started').length;
 
@@ -369,6 +378,7 @@ class OperationsApp {
     this.data.summary = {
       totalTasks,
       tasksInProgress,
+      onHoldTasks,
       completedTasks,
       notStartedTasks,
       pendingApprovals: pendingSchoolApprovals + pendingTaskApprovals + pendingGroupApprovals,
@@ -455,6 +465,7 @@ class OperationsApp {
     const map = {
       'Not started': this.t('statusNotStarted'),
       'In progress': this.t('statusInProgress'),
+      'On hold': this.t('statusOnHold'),
       'Ready for approval': this.t('statusReadyForApproval'),
       'Completed': this.t('statusCompleted'),
       'Approved': this.t('statusApproved'),
@@ -474,11 +485,45 @@ class OperationsApp {
     if (s === 'completed' || s === 'done' || s === 'responded') cls = 'status-completed';
     else if (s === 'approved') cls = 'status-approved';
     else if (s === 'in progress' || s === 'researched' || s === 'sent') cls = 'status-inprogress';
+    else if (s === 'on hold') cls = 'status-onhold';
     else if (s === 'ready for approval' || s === 'pending approval') cls = 'status-approval';
     else if (s === 'already contacted') cls = 'status-donotduplicate';
     else if (s === 'existing relationship') cls = 'status-relationship';
 
     return `<span class="status-badge ${cls}">${this.escapeHtml(this.formatStatusText(status))}</span>`;
+  }
+
+  formatDisplayDate(isoDate) {
+    if (!isoDate) return '';
+    const parts = String(isoDate).split('-');
+    if (parts.length !== 3) return isoDate;
+    return `${parts[2]}/${parts[1]}/${parts[0]}`;
+  }
+
+  formatTaskDates(task) {
+    if (!task) return '';
+    const due = (task.due_date || '').trim();
+    const followUp = (task.follow_up_date || '').trim();
+    if (!due && !followUp) return '';
+
+    const todayIso = new Date().toISOString().slice(0, 10);
+    const isCompleted = ['completed', 'done'].includes((task.status || '').toLowerCase());
+    const isOverdue = Boolean(due && !isCompleted && due < todayIso);
+
+    return `
+      <div class="task-dates-row">
+        ${due ? `
+          <span class="task-date-chip ${isOverdue ? 'overdue' : ''}">
+            📅 ${this.escapeHtml(this.t('colDueDate'))}: ${this.escapeHtml(this.formatDisplayDate(due))}${isOverdue ? ` (${this.escapeHtml(this.t('dueDateOverdue'))})` : ''}
+          </span>
+        ` : ''}
+        ${followUp ? `
+          <span class="task-date-chip followup">
+            🔔 ${this.escapeHtml(this.t('colFollowUpDate'))}: ${this.escapeHtml(this.formatDisplayDate(followUp))}
+          </span>
+        ` : ''}
+      </div>
+    `;
   }
 
   formatCategoryText(cat) {
@@ -675,6 +720,7 @@ class OperationsApp {
                     ${this.escapeHtml(this.bf(t, 'output_results'))}
                   </div>
                 ` : ''}
+                ${this.formatTaskDates(t)}
                 <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12.5px;color:var(--text-secondary)">
                   <span><strong>${this.escapeHtml(this.t('colNextAction'))}:</strong> ${this.escapeHtml(this.bf(t, 'next_action'))}</span>
                   <button type="button" class="btn btn-sm btn-outline" onclick="window.app.openTaskModal(${t.id})">${this.escapeHtml(this.t('editBtn'))}</button>
@@ -773,6 +819,7 @@ class OperationsApp {
     const statuses = [
       { key: 'all', label: `${this.t('filterAll')} (${tasks.length})` },
       { key: 'In progress', label: `${this.t('statusInProgress')} (${tasks.filter(t => t.status.toLowerCase() === 'in progress').length})` },
+      { key: 'On hold', label: `${this.t('statusOnHold')} (${tasks.filter(t => t.status.toLowerCase() === 'on hold').length})` },
       { key: 'Not started', label: `${this.t('statusNotStarted')} (${tasks.filter(t => t.status.toLowerCase() === 'not started').length})` },
       { key: 'Ready for approval', label: `${this.t('statusReadyForApproval')} (${tasks.filter(t => t.status.toLowerCase() === 'ready for approval').length})` },
       { key: 'Completed', label: `${this.t('statusCompleted')} (${tasks.filter(t => t.status.toLowerCase() === 'completed').length})` }
@@ -824,6 +871,7 @@ class OperationsApp {
             <div>
               <h3 class="task-title">${this.escapeHtml(this.bf(t, 'task'))}</h3>
               <p class="task-desc" style="margin-top:3px">${this.escapeHtml(this.bf(t, 'description'))}</p>
+              ${this.formatTaskDates(t)}
             </div>
 
             ${this.bf(t, 'output_results') ? `
@@ -848,7 +896,7 @@ class OperationsApp {
 
             <div class="task-card-foot">
               <select class="status-select" onchange="window.app.quickUpdateTaskStatus(${t.id}, this.value)" aria-label="Task Status">
-                ${['Not started', 'In progress', 'Ready for approval', 'Completed'].map(opt => `
+                ${['Not started', 'In progress', 'On hold', 'Ready for approval', 'Completed'].map(opt => `
                   <option value="${opt}" ${t.status.toLowerCase() === opt.toLowerCase() ? 'selected' : ''}>${this.escapeHtml(this.formatStatusText(opt))}</option>
                 `).join('')}
               </select>
@@ -1239,10 +1287,19 @@ class OperationsApp {
           <div class="form-group">
             <label class="form-label">${this.escapeHtml(this.t('colStatus'))}</label>
             <select name="status" class="form-control">
-              ${['Not started', 'In progress', 'Ready for approval', 'Completed'].map(st => `
+              ${['Not started', 'In progress', 'On hold', 'Ready for approval', 'Completed'].map(st => `
                 <option value="${st}" ${task && task.status.toLowerCase() === st.toLowerCase() ? 'selected' : ''}>${this.escapeHtml(this.formatStatusText(st))}</option>
               `).join('')}
             </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">${this.escapeHtml(this.t('colDueDate'))}</label>
+            <input type="date" name="due_date" class="form-control" value="${this.escapeHtml(task && task.due_date ? task.due_date : '')}" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">${this.escapeHtml(this.t('colFollowUpDate'))}</label>
+            <input type="date" name="follow_up_date" class="form-control" value="${this.escapeHtml(task && task.follow_up_date ? task.follow_up_date : '')}" />
           </div>
 
           <div class="form-group">
@@ -1301,6 +1358,8 @@ class OperationsApp {
     payload.output_results_en = payload.output_results_en || payload.output_results_he || '';
     payload.next_action_he = payload.next_action_he || payload.next_action_en || '';
     payload.next_action_en = payload.next_action_en || payload.next_action_he || '';
+    payload.due_date = payload.due_date || '';
+    payload.follow_up_date = payload.follow_up_date || '';
 
     const isMaccabi = payload.owner_key === 'maccabi';
     payload.owner_he = isMaccabi ? 'מכבי' : 'אופק';

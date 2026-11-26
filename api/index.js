@@ -49,6 +49,7 @@ function computeSummary(store) {
 
   const totalTasks = tasks.length;
   const tasksInProgress = tasks.filter(t => (t.status || '').toLowerCase() === 'in progress').length;
+  const onHoldTasks = tasks.filter(t => (t.status || '').toLowerCase() === 'on hold').length;
   const completedTasks = tasks.filter(t => ['completed', 'done'].includes((t.status || '').toLowerCase())).length;
   const notStartedTasks = tasks.filter(t => (t.status || '').toLowerCase() === 'not started').length;
 
@@ -73,6 +74,7 @@ function computeSummary(store) {
   store.summary = {
     totalTasks,
     tasksInProgress,
+    onHoldTasks,
     completedTasks,
     notStartedTasks,
     pendingApprovals: pendingSchoolApprovals + pendingTaskApprovals + pendingGroupApprovals,
@@ -400,6 +402,8 @@ module.exports = async function apiHandler(req, res) {
         description_he: b.description_he || b.description_en || '',
         description_en: b.description_en || b.description_he || '',
         status: b.status || 'Not started',
+        due_date: b.due_date || '',
+        follow_up_date: b.follow_up_date || '',
         next_action_he: b.next_action_he || b.next_action_en || '',
         next_action_en: b.next_action_en || b.next_action_he || '',
         owner_he: owner.owner_he,
@@ -429,6 +433,8 @@ module.exports = async function apiHandler(req, res) {
         description_he: b.description_he ?? existing.description_he,
         description_en: b.description_en ?? existing.description_en,
         status: b.status ?? existing.status,
+        due_date: b.due_date ?? existing.due_date ?? '',
+        follow_up_date: b.follow_up_date ?? existing.follow_up_date ?? '',
         next_action_he: b.next_action_he ?? existing.next_action_he,
         next_action_en: b.next_action_en ?? existing.next_action_en,
         owner_he: owner.owner_he,
