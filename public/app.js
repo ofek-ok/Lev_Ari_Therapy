@@ -1628,7 +1628,7 @@ class OperationsApp {
   openCloudModal() {
     const isHe = this.lang === 'he';
     const mode = this.data?.persistenceMode || 'memory';
-    const isPersistent = mode === 'upstash' || mode === 'github' || mode === 'local';
+    const isPersistent = mode === 'neon' || mode === 'upstash' || mode === 'github' || mode === 'local';
 
     const statusTitle = isPersistent
       ? (isHe ? `✓ מסד נתונים ענן מחובר (${mode.toUpperCase()})` : `✓ Persistent Cloud Backend Connected (${mode.toUpperCase()})`)

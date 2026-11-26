@@ -2,12 +2,19 @@ const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const { URL } = require('node:url');
+const { neon } = require('@neondatabase/serverless');
 const seedData = require('./seed-data.json');
 
 const TMP_JSON_PATH = path.join(os.tmpdir(), 'lev-ari-cloud-db-v3.json');
 const REDIS_KEY = 'lev_ari_operations_store_v1';
 
 let memoryStore = null;
+let neonTableReady = false;
+
+function getDatabaseUrl() {
+  const url = process.env.DATABASE_URL || process.env.POSTGRES_URL || '';
+  return url.trim() || null;
+}
 
 function getUpstashConfig() {
   const url = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL || '';
@@ -30,6 +37,7 @@ function getGithubConfig() {
 }
 
 function getPersistenceMode() {
+  if (getDatabaseUrl()) return 'neon';
   if (getUpstashConfig()) return 'upstash';
   if (getGithubConfig()) return 'github';
   try {
@@ -204,7 +212,64 @@ async function writeToGithub(store) {
   }
 }
 
+async function ensureNeonTable(sql) {
+  if (neonTableReady) return;
+  await sql`
+    CREATE TABLE IF NOT EXISTS operations_store (
+      id TEXT PRIMARY KEY,
+      payload JSONB NOT NULL,
+      updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    )
+  `;
+  neonTableReady = true;
+}
+
+async function readFromNeon() {
+  const dbUrl = getDatabaseUrl();
+  if (!dbUrl) return null;
+  try {
+    const sql = neon(dbUrl);
+    await ensureNeonTable(sql);
+    const rows = await sql`SELECT payload FROM operations_store WHERE id = 'main' LIMIT 1`;
+    if (rows.length > 0 && rows[0].payload) {
+      return rows[0].payload;
+    }
+    const seeded = computeSummary(JSON.parse(JSON.stringify(seedData)));
+    await writeToNeon(seeded);
+    return seeded;
+  } catch (err) {
+    console.error('Neon read error:', err.message);
+    return null;
+  }
+}
+
+async function writeToNeon(store) {
+  const dbUrl = getDatabaseUrl();
+  if (!dbUrl) return false;
+  try {
+    const sql = neon(dbUrl);
+    await ensureNeonTable(sql);
+    const jsonPayload = JSON.stringify(store);
+    await sql`
+      INSERT INTO operations_store (id, payload, updated_at)
+      VALUES ('main', ${jsonPayload}::jsonb, NOW())
+      ON CONFLICT (id) DO UPDATE
+      SET payload = EXCLUDED.payload, updated_at = NOW()
+    `;
+    return true;
+  } catch (err) {
+    console.error('Neon write error:', err.message);
+    return false;
+  }
+}
+
 async function getStore() {
+  const neonData = await readFromNeon();
+  if (neonData) {
+    memoryStore = computeSummary(neonData);
+    return memoryStore;
+  }
+
   const upstashData = await readFromUpstash();
   if (upstashData) {
     memoryStore = computeSummary(upstashData);
@@ -239,6 +304,7 @@ async function persistStore(store) {
   memoryStore = store;
   const jsonStr = JSON.stringify(store, null, 2);
 
+  await writeToNeon(store);
   await writeToUpstash(store);
   await writeToGithub(store);
 
