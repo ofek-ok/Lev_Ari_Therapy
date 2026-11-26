@@ -516,6 +516,14 @@ module.exports = async function apiHandler(req, res) {
       return sendJson(res, 200, await persistStore(store));
     }
 
+    if (pathname.startsWith('/api/tasks/') && method === 'DELETE') {
+      const id = Number(pathname.split('/')[3]);
+      const idx = store.tasks.findIndex(t => Number(t.id) === id);
+      if (idx === -1) return sendJson(res, 404, { error: 'Task not found' });
+      store.tasks.splice(idx, 1);
+      return sendJson(res, 200, await persistStore(store));
+    }
+
     // SCHOOLS
     if (pathname === '/api/schools' && method === 'POST') {
       const b = await parseBody(req);

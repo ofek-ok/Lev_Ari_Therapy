@@ -127,7 +127,23 @@ const I18N = {
 
     copiedEmailToast: 'כתובת האימייל הועתקה!',
     copiedMsgToast: 'נוסח ההודעה הועתק!',
-    savedToast: 'נשמר בהצלחה!'
+    savedToast: 'נשמר בהצלחה!',
+    deletedToast: 'המשימה נמחקה!',
+    viewGrouped: 'רשימה מקובצת',
+    viewBoard: 'לוח משימות',
+    sortLabel: 'מיון:',
+    sortPriority: 'עדיפות (P1–P7)',
+    sortDueDate: 'תאריך יעד',
+    sortFollowUp: 'תאריך Follow-up',
+    sortNumber: 'מספר משימה (#)',
+    taskDetailsToggle: 'פרטים מלאים ותוצרים',
+    deleteBtn: '🗑️ מחק',
+    confirmDeleteTask: 'למחוק את המשימה הזו לצמיתות?',
+    tasksEmpty: 'לא נמצאו משימות התואמות לסינון הנוכחי.',
+    statActive: 'בביצוע כעת',
+    statOnHold: 'בהמתנה (On hold)',
+    statFollowUp: 'עם יעד / Follow-up',
+    statCompleted: 'הושלמו'
   },
   en: {
     brandEyebrow: 'CLINICAL & ATHLETIC THERAPY',
@@ -257,7 +273,23 @@ const I18N = {
 
     copiedEmailToast: 'Email copied!',
     copiedMsgToast: 'Message copied!',
-    savedToast: 'Saved successfully!'
+    savedToast: 'Saved successfully!',
+    deletedToast: 'Task deleted!',
+    viewGrouped: 'Grouped',
+    viewBoard: 'Board',
+    sortLabel: 'Sort:',
+    sortPriority: 'Priority (P1–P7)',
+    sortDueDate: 'Due Date',
+    sortFollowUp: 'Follow-up Date',
+    sortNumber: 'Task #',
+    taskDetailsToggle: 'Full Details & Deliverables',
+    deleteBtn: '🗑️ Delete',
+    confirmDeleteTask: 'Delete this task permanently?',
+    tasksEmpty: 'No tasks match the current filter.',
+    statActive: 'In Progress',
+    statOnHold: 'On Hold',
+    statFollowUp: 'Scheduled / Follow-up',
+    statCompleted: 'Completed'
   }
 };
 
@@ -270,6 +302,8 @@ class OperationsApp {
     this.taskStatusFilter = 'all';
     this.taskOwnerFilter = 'all';
     this.taskSearch = '';
+    this.taskViewMode = localStorage.getItem('lev_ari_task_view') || 'grouped';
+    this.taskSortBy = localStorage.getItem('lev_ari_task_sort') || 'priority';
 
     this.schoolRecordTypeFilter = 'prospect';
     this.schoolSearch = '';
@@ -799,9 +833,95 @@ class OperationsApp {
   /* =========================================================================
    * 2. MOBILE-FIRST TASK CARDS (ZERO TABLES!)
    * ========================================================================= */
+  sortTasksList(list) {
+    const arr = [...list];
+    const prioVal = p => {
+      const m = String(p || 'P9').match(/\d+/);
+      return m ? Number(m[0]) : 99;
+    };
+    const dateVal = d => (d && String(d).trim()) ? String(d).trim() : '9999-99-99';
+
+    arr.sort((a, b) => {
+      if (this.taskSortBy === 'due_date') {
+        const cmp = dateVal(a.due_date).localeCompare(dateVal(b.due_date));
+        if (cmp !== 0) return cmp;
+      } else if (this.taskSortBy === 'follow_up_date') {
+        const cmp = dateVal(a.follow_up_date).localeCompare(dateVal(b.follow_up_date));
+        if (cmp !== 0) return cmp;
+      } else if (this.taskSortBy === 'number') {
+        return (a.task_number || 0) - (b.task_number || 0);
+      }
+      const pCmp = prioVal(a.priority) - prioVal(b.priority);
+      if (pCmp !== 0) return pCmp;
+      return (a.task_number || 0) - (b.task_number || 0);
+    });
+    return arr;
+  }
+
+  renderTaskCard(t) {
+    const desc = this.bf(t, 'description');
+    const deliverable = this.bf(t, 'output_results');
+    const notes = this.bf(t, 'notes_approval');
+    const hasExtraDetails = Boolean(desc || deliverable || notes);
+
+    return `
+      <article class="task-card">
+        <div class="task-card-top">
+          <div class="task-id-group">
+            <span class="task-num-tag">#${t.task_number}</span>
+            <span class="priority-badge priority-${this.escapeHtml(t.priority)}">${this.escapeHtml(t.priority)}</span>
+            ${this.formatOwnerBadge(t)}
+          </div>
+          ${this.formatStatusBadge(t.status)}
+        </div>
+
+        <div>
+          <h3 class="task-title">${this.escapeHtml(this.bf(t, 'task'))}</h3>
+          ${this.formatTaskDates(t)}
+        </div>
+
+        ${this.bf(t, 'next_action') ? `
+          <div class="task-callout">
+            <span class="task-callout-label">${this.escapeHtml(this.t('colNextAction'))}</span>
+            <strong>${this.escapeHtml(this.bf(t, 'next_action'))}</strong>
+          </div>
+        ` : ''}
+
+        ${hasExtraDetails ? `
+          <details class="task-details-toggle">
+            <summary>▾ ${this.escapeHtml(this.t('taskDetailsToggle'))}</summary>
+            <div class="task-details-body">
+              ${desc ? `<p class="task-desc">${this.escapeHtml(desc)}</p>` : ''}
+              ${deliverable ? `
+                <div class="task-callout deliverable">
+                  <span class="task-callout-label">${this.escapeHtml(this.t('colDeliverable'))}</span>
+                  ${this.escapeHtml(deliverable)}
+                </div>
+              ` : ''}
+              ${notes ? `
+                <div style="font-size:12px;color:var(--text-muted)">
+                  <strong>${this.escapeHtml(this.t('colNotes'))}:</strong> ${this.escapeHtml(notes)}
+                </div>
+              ` : ''}
+            </div>
+          </details>
+        ` : ''}
+
+        <div class="task-card-foot">
+          <select class="status-select" onchange="window.app.quickUpdateTaskStatus(${t.id}, this.value)" aria-label="Task Status">
+            ${['Not started', 'In progress', 'On hold', 'Ready for approval', 'Completed'].map(opt => `
+              <option value="${opt}" ${t.status.toLowerCase() === opt.toLowerCase() ? 'selected' : ''}>${this.escapeHtml(this.formatStatusText(opt))}</option>
+            `).join('')}
+          </select>
+          <button type="button" class="btn btn-outline" onclick="window.app.openTaskModal(${t.id})">✏️ ${this.escapeHtml(this.t('editBtn'))}</button>
+        </div>
+      </article>
+    `;
+  }
+
   renderTasksSection() {
     const { tasks } = this.data;
-    const filtered = tasks.filter(t => {
+    const filtered = this.sortTasksList(tasks.filter(t => {
       if (this.taskStatusFilter !== 'all' && t.status.toLowerCase() !== this.taskStatusFilter.toLowerCase()) {
         return false;
       }
@@ -814,15 +934,20 @@ class OperationsApp {
         if (!hay.includes(q)) return false;
       }
       return true;
-    });
+    }));
+
+    const activeCount = tasks.filter(t => t.status.toLowerCase() === 'in progress').length;
+    const onHoldCount = tasks.filter(t => t.status.toLowerCase() === 'on hold').length;
+    const scheduledCount = tasks.filter(t => (t.due_date && t.due_date.trim()) || (t.follow_up_date && t.follow_up_date.trim())).length;
+    const completedCount = tasks.filter(t => ['completed', 'done'].includes(t.status.toLowerCase())).length;
 
     const statuses = [
       { key: 'all', label: `${this.t('filterAll')} (${tasks.length})` },
-      { key: 'In progress', label: `${this.t('statusInProgress')} (${tasks.filter(t => t.status.toLowerCase() === 'in progress').length})` },
-      { key: 'On hold', label: `${this.t('statusOnHold')} (${tasks.filter(t => t.status.toLowerCase() === 'on hold').length})` },
+      { key: 'In progress', label: `${this.t('statusInProgress')} (${activeCount})` },
+      { key: 'On hold', label: `${this.t('statusOnHold')} (${onHoldCount})` },
       { key: 'Not started', label: `${this.t('statusNotStarted')} (${tasks.filter(t => t.status.toLowerCase() === 'not started').length})` },
       { key: 'Ready for approval', label: `${this.t('statusReadyForApproval')} (${tasks.filter(t => t.status.toLowerCase() === 'ready for approval').length})` },
-      { key: 'Completed', label: `${this.t('statusCompleted')} (${tasks.filter(t => t.status.toLowerCase() === 'completed').length})` }
+      { key: 'Completed', label: `${this.t('statusCompleted')} (${completedCount})` }
     ];
 
     const owners = [
@@ -831,7 +956,74 @@ class OperationsApp {
       { key: 'maccabi', label: `${this.t('ownerMaccabi')} (${tasks.filter(t => this.getOwnerKey(t) === 'maccabi').length})` }
     ];
 
+    const groupOrder = ['In progress', 'Ready for approval', 'On hold', 'Not started', 'Completed'];
+
+    let contentHtml = '';
+    if (filtered.length === 0) {
+      contentHtml = `<div class="tasks-empty-state">${this.escapeHtml(this.t('tasksEmpty'))}</div>`;
+    } else if (this.taskViewMode === 'board') {
+      contentHtml = `
+        <div class="task-board">
+          ${groupOrder.map(stKey => {
+            const colTasks = filtered.filter(t => t.status.toLowerCase() === stKey.toLowerCase());
+            return `
+              <div class="task-board-col">
+                <div class="task-board-col-head">
+                  ${this.formatStatusBadge(stKey)}
+                  <span class="task-group-count">${colTasks.length}</span>
+                </div>
+                ${colTasks.map(t => this.renderTaskCard(t)).join('')}
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+    } else {
+      contentHtml = `
+        <div class="task-groups-stack">
+          ${groupOrder.map(stKey => {
+            const groupTasks = filtered.filter(t => t.status.toLowerCase() === stKey.toLowerCase());
+            if (groupTasks.length === 0) return '';
+            const isOpenByDefault = stKey !== 'Completed' || this.taskStatusFilter.toLowerCase() === 'completed';
+            return `
+              <details class="task-group-block" ${isOpenByDefault ? 'open' : ''}>
+                <summary class="task-group-header">
+                  <div class="task-group-title-wrap">
+                    ${this.formatStatusBadge(stKey)}
+                    <span class="task-group-count">${groupTasks.length}</span>
+                  </div>
+                  <span style="font-size:12px;color:var(--text-muted);font-weight:700">▾</span>
+                </summary>
+                <div class="task-group-body">
+                  ${groupTasks.map(t => this.renderTaskCard(t)).join('')}
+                </div>
+              </details>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }
+
     return `
+      <div class="tasks-summary-strip">
+        <button type="button" class="tasks-stat-chip ${this.taskStatusFilter === 'In progress' ? 'active' : ''}" onclick="window.app.setTaskFilter('In progress')">
+          <span class="tasks-stat-num">${activeCount}</span>
+          <span class="tasks-stat-label">${this.escapeHtml(this.t('statActive'))}</span>
+        </button>
+        <button type="button" class="tasks-stat-chip ${this.taskStatusFilter === 'On hold' ? 'active' : ''}" onclick="window.app.setTaskFilter('On hold')">
+          <span class="tasks-stat-num">${onHoldCount}</span>
+          <span class="tasks-stat-label">${this.escapeHtml(this.t('statOnHold'))}</span>
+        </button>
+        <button type="button" class="tasks-stat-chip ${this.taskSortBy === 'due_date' ? 'active' : ''}" onclick="window.app.setTaskSortBy('due_date')">
+          <span class="tasks-stat-num">${scheduledCount}</span>
+          <span class="tasks-stat-label">${this.escapeHtml(this.t('statFollowUp'))}</span>
+        </button>
+        <button type="button" class="tasks-stat-chip ${this.taskStatusFilter === 'Completed' ? 'active' : ''}" onclick="window.app.setTaskFilter('Completed')">
+          <span class="tasks-stat-num">${completedCount}</span>
+          <span class="tasks-stat-label">${this.escapeHtml(this.t('statCompleted'))}</span>
+        </button>
+      </div>
+
       <div class="filter-bar">
         <div class="pills-scroll">
           ${statuses.map(st => `
@@ -850,62 +1042,47 @@ class OperationsApp {
           `).join('')}
         </div>
 
+        <div class="tasks-controls-row">
+          <div class="view-toggle" role="group">
+            <button type="button" class="view-toggle-btn ${this.taskViewMode === 'grouped' ? 'active' : ''}" onclick="window.app.setTaskViewMode('grouped')">
+              ☰ ${this.escapeHtml(this.t('viewGrouped'))}
+            </button>
+            <button type="button" class="view-toggle-btn ${this.taskViewMode === 'board' ? 'active' : ''}" onclick="window.app.setTaskViewMode('board')">
+              ▦ ${this.escapeHtml(this.t('viewBoard'))}
+            </button>
+          </div>
+
+          <div class="sort-wrap">
+            <span class="owner-filter-label">${this.escapeHtml(this.t('sortLabel'))}</span>
+            <select class="sort-select" onchange="window.app.setTaskSortBy(this.value)">
+              <option value="priority" ${this.taskSortBy === 'priority' ? 'selected' : ''}>${this.escapeHtml(this.t('sortPriority'))}</option>
+              <option value="due_date" ${this.taskSortBy === 'due_date' ? 'selected' : ''}>${this.escapeHtml(this.t('sortDueDate'))}</option>
+              <option value="follow_up_date" ${this.taskSortBy === 'follow_up_date' ? 'selected' : ''}>${this.escapeHtml(this.t('sortFollowUp'))}</option>
+              <option value="number" ${this.taskSortBy === 'number' ? 'selected' : ''}>${this.escapeHtml(this.t('sortNumber'))}</option>
+            </select>
+          </div>
+        </div>
+
         <div class="search-actions-row">
           <input type="search" class="search-box" placeholder="${this.escapeHtml(this.t('searchPlaceholder'))}" value="${this.escapeHtml(this.taskSearch)}" oninput="window.app.setTaskSearch(this.value)" />
           <button type="button" class="btn btn-primary" onclick="window.app.openTaskModal()">${this.escapeHtml(this.t('addTaskBtn'))}</button>
         </div>
       </div>
 
-      <div class="cards-list">
-        ${filtered.map(t => `
-          <article class="task-card">
-            <div class="task-card-top">
-              <div class="task-id-group">
-                <span class="task-num-tag">#${t.task_number}</span>
-                <span class="priority-badge priority-${this.escapeHtml(t.priority)}">${this.escapeHtml(t.priority)}</span>
-                ${this.formatOwnerBadge(t)}
-              </div>
-              ${this.formatStatusBadge(t.status)}
-            </div>
-
-            <div>
-              <h3 class="task-title">${this.escapeHtml(this.bf(t, 'task'))}</h3>
-              <p class="task-desc" style="margin-top:3px">${this.escapeHtml(this.bf(t, 'description'))}</p>
-              ${this.formatTaskDates(t)}
-            </div>
-
-            ${this.bf(t, 'output_results') ? `
-              <div class="task-callout deliverable">
-                <span class="task-callout-label">${this.escapeHtml(this.t('colDeliverable'))}</span>
-                ${this.escapeHtml(this.bf(t, 'output_results'))}
-              </div>
-            ` : ''}
-
-            ${this.bf(t, 'next_action') ? `
-              <div class="task-callout">
-                <span class="task-callout-label">${this.escapeHtml(this.t('colNextAction'))}</span>
-                <strong>${this.escapeHtml(this.bf(t, 'next_action'))}</strong>
-              </div>
-            ` : ''}
-
-            ${this.bf(t, 'notes_approval') ? `
-              <div style="font-size:12.5px;color:var(--text-muted)">
-                <strong>${this.escapeHtml(this.t('colNotes'))}:</strong> ${this.escapeHtml(this.bf(t, 'notes_approval'))}
-              </div>
-            ` : ''}
-
-            <div class="task-card-foot">
-              <select class="status-select" onchange="window.app.quickUpdateTaskStatus(${t.id}, this.value)" aria-label="Task Status">
-                ${['Not started', 'In progress', 'On hold', 'Ready for approval', 'Completed'].map(opt => `
-                  <option value="${opt}" ${t.status.toLowerCase() === opt.toLowerCase() ? 'selected' : ''}>${this.escapeHtml(this.formatStatusText(opt))}</option>
-                `).join('')}
-              </select>
-              <button type="button" class="btn btn-outline" onclick="window.app.openTaskModal(${t.id})">✏️ ${this.escapeHtml(this.t('editBtn'))}</button>
-            </div>
-          </article>
-        `).join('')}
-      </div>
+      ${contentHtml}
     `;
+  }
+
+  setTaskViewMode(mode) {
+    this.taskViewMode = mode === 'board' ? 'board' : 'grouped';
+    localStorage.setItem('lev_ari_task_view', this.taskViewMode);
+    this.renderCurrentSection();
+  }
+
+  setTaskSortBy(sortBy) {
+    this.taskSortBy = sortBy || 'priority';
+    localStorage.setItem('lev_ari_task_sort', this.taskSortBy);
+    this.renderCurrentSection();
   }
 
   setTaskFilter(status) {
@@ -1339,11 +1516,29 @@ class OperationsApp {
           </div>
         </div>
         <div class="modal-actions">
+          ${id ? `<button type="button" class="btn btn-danger-outline" onclick="window.app.deleteTask(${id})">${this.escapeHtml(this.t('deleteBtn'))}</button>` : ''}
           <button type="button" class="btn btn-outline" onclick="window.app.closeModal()">${this.escapeHtml(this.t('cancelBtn'))}</button>
           <button type="submit" class="btn btn-primary">${this.escapeHtml(this.t('saveBtn'))}</button>
         </div>
       </form>
     `);
+  }
+
+  async deleteTask(id) {
+    if (!id || !confirm(this.t('confirmDeleteTask'))) return;
+    try {
+      const res = await fetch(`api/tasks/${id}`, { method: 'DELETE' });
+      if (!res.ok) throw new Error('Static mode');
+      this.data = await res.json();
+    } catch {
+      this.data.tasks = (this.data.tasks || []).filter(x => x.id !== id);
+      this.recomputeSummary();
+    }
+    localStorage.setItem('lev_ari_local_backup', JSON.stringify(this.data));
+    this.closeModal();
+    this.updateNavBadges();
+    this.renderCurrentSection();
+    this.showToast(this.t('deletedToast'));
   }
 
   async saveTaskForm(e, id) {
