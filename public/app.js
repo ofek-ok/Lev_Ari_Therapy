@@ -1232,7 +1232,7 @@ class OperationsApp {
                     </div>
                   ` : ''}
 
-                  ${s.record_type === 'prospect' ? `
+                  ${(s.outreach_message_he || s.outreach_message_en) ? `
                     <details class="msg-accordion">
                       <summary>
                         <span>✉️ ${this.escapeHtml(this.t('toggleMsgSummary'))}</span>
